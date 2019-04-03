@@ -10,7 +10,15 @@
 #define plds_adam_funs_hpp
 
 #include <stdio.h>
+
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+
+
 #include "../../../../module_help/eigen/Eigen/Dense"
+#include "../../../../module_help/StAC_rtxi/dataFuns.h" //something weird about using this
 
 
 class plds_adam{
@@ -28,21 +36,31 @@ class plds_adam{
         Eigen::Matrix2d A;
         Eigen::Vector2d B;
         Eigen::RowVector2d C; //generalize later
-        float D;
+        double D; //why are these floats not doubles?
     
         Eigen::Vector2d x;
-        float y;
+        double y;
+        double u;
     
         double dt;
     
     
-        plds_adam(): nX(2), nU(1) , nY(1){ ;};
+        plds_adam(): nX(2), nU(1) , nY(1){ initSys();};
+    
+        //plds_adam(): nX(2), nU(1) , nY(1){ ;};
+
 
     
+        void printSys();
+        void loadParamsFromTxt();
+        void resetSys();
+        void initSys();
     
+        void stepPlant(double);
     
-    
+        //void randInit();
         //void printMyParams();
+        //void loadParamsFromTxt();
         //void initSys();
         //void stepPlant();
     
