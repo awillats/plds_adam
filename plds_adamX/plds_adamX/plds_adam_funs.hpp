@@ -17,9 +17,9 @@
 #include <string>
 
 
-//correct these paths later
-#include "../../../../module_help/eigen/Eigen/Dense"
-#include "../../../../module_help/StAC_rtxi/dataFuns.h" //something weird about using this
+//from module_help
+#include <eigen/Eigen/Dense>
+#include <StAC_rtxi/dataFuns.h>
 
 
 class plds_adam{
@@ -56,8 +56,11 @@ class plds_adam{
         void loadParamsFromTxt();
         void resetSys();
         void initSys();
-    
+
+
         void stepPlant(double);
+	void stepPlant(Eigen::Vector2d, double);    
+
     
         //void randInit();
         //void printMyParams();

@@ -28,21 +28,12 @@ void plds_adam::loadParamsFromTxt()
     {
         pullParamLine(myfile); //gets nx
         
-        std::vector<double> numA = pullParamLine(myfile);
-        Eigen::Map<Eigen::Matrix2d> tA(numA.data(),A.rows(),A.cols());
-        A = tA;
-        
-        std::vector<double> numB = pullParamLine(myfile);
-        Eigen::Map<Eigen::Vector2d> tB(numB.data(),B.rows(),1);
-        B = tB;
-        
-        
-        std::vector<double> numC = pullParamLine(myfile);
-        Eigen::Map<Eigen::RowVector2d> tC(numC.data(),1,C.cols());
-        C = tC;
-        
-        std::vector<double> numD = pullParamLine(myfile);
-        D = numD[0];
+	A=stdVec2EigenM(pullParamLine(myfile), A.rows(), A.cols());
+       	B = stdVec2EigenV(pullParamLine(myfile), B.rows());
+	C = stdVec2EigenRV(pullParamLine(myfile), C.cols());
+
+	std::vector<double> numD = pullParamLine(myfile); 	
+	D = numD[0]; 
         
         nX = (int) A.cols();
         nU = (int) B.cols();
@@ -51,7 +42,7 @@ void plds_adam::loadParamsFromTxt()
     }
     else
     {
-        std::cout<<"\ncouldnt find\n";
+        std::cout<<"\ncouldnt find plds params\n";
     }
     myfile.close();
 
@@ -71,11 +62,16 @@ void plds_adam::initSys()
     printSys();
 }
 
-
 void plds_adam::stepPlant(double newU)
 {
     u = newU;
     x = A*x + B*u; //+noise
     y = C*x + D*u;  //+noise
 }
+void plds_adam::stepPlant(Eigen::Vector2d newX, double newU)
+{
+    x = newX; //allows overriding x at step, as a solution for switching
+    stepPlant(newU);
+}
+
 
