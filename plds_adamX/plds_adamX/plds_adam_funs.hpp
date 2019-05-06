@@ -18,8 +18,8 @@
 
 
 //correct these paths later
-//#include "../../../../module_help/eigen/Eigen/Dense"
-//#include "../../../../module_help/StAC_rtxi/dataFuns.h" //something weird about using this
+#include "../../../../module_help/eigen/Eigen/Dense"
+#include "../../../../module_help/StAC_rtxi/dataFuns.h" //something weird about using this
 
 
 class plds_adam{

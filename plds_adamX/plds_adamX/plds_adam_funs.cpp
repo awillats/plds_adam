@@ -18,13 +18,10 @@ void plds_adam::printSys()
 }
 void plds_adam::loadParamsFromTxt()
 {
-
 	std::string homepath = getenv("HOME");
 	std::ifstream myfile;
 	myfile.open(homepath+"/RTXI/modules/ss_modules/ss_ctrl/params/plant_params.txt");
 
-    //std::ifstream myfile;
-    //myfile.open("/Users/adam/Documents/GitHub/rtxi_vm_copy/ss_modules/ss_ctrl/params/plant_params.txt");
     //don't know how to correctly do this with relative paths
     
     if (myfile.good())
