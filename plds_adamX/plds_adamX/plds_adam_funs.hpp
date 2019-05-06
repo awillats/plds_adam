@@ -63,10 +63,6 @@ class plds_adam{
 
     
         //void randInit();
-        //void printMyParams();
-        //void loadParamsFromTxt();
-        //void initSys();
-        //void stepPlant();
     
     private:
     
