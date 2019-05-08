@@ -63,5 +63,15 @@ class plds_adam{
     private:   
 };
 
+class plds_noisy : public plds_adam{
+    public:
+
+	double sigma;
+
+         plds_noisy(): plds_adam(), sigma(0.1) {initSys();};
+        // plds_noisy(double sig):  nX(2), nU(1) , nY(1), sigma(sig) {initSys();};
+	
+};
+
 
 #endif /* plds_adam_funs_hpp */
