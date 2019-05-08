@@ -45,13 +45,10 @@ class plds_adam{
     
         double dt;
     
-    
         plds_adam(): nX(2), nU(1) , nY(1){ initSys();};
     
         //plds_adam(): nX(2), nU(1) , nY(1){ ;};
 
-
-    
         void printSys();
         void loadParamsFromTxt();
         void resetSys();
@@ -61,12 +58,9 @@ class plds_adam{
         void stepPlant(double);
 	void stepPlant(Eigen::Vector2d, double);    
 
-    
         //void randInit();
     
-    private:
-    
-    
+    private:   
 };
 
 
