@@ -16,6 +16,8 @@
 #include <sstream>
 #include <string>
 
+#include <random>
+
 
 //from module_help
 #include <eigen/Eigen/Dense>
@@ -64,11 +66,22 @@ class plds_adam{
 };
 
 class plds_noisy : public plds_adam{
+    private:
+	//std::random_device rd; 
+    	//std::mt19937 gen; 
+
     public:
 
 	double sigma;
 
-         plds_noisy(): plds_adam(), sigma(0.1) {initSys();};
+         plds_noisy(): plds_adam(), sigma(0.1)
+	{
+		initSys();
+	};
+
+	void stepPlant(double);
+	
+
         // plds_noisy(double sig):  nX(2), nU(1) , nY(1), sigma(sig) {initSys();};
 	
 };

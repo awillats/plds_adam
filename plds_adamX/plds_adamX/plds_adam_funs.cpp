@@ -26,7 +26,7 @@ void plds_adam::loadParamsFromTxt()
     {
         pullParamLine(myfile); //gets nx
         
-	A=stdVec2EigenM(pullParamLine(myfile), A.rows(), A.cols());
+	A = stdVec2EigenM(pullParamLine(myfile), A.rows(), A.cols());
        	B = stdVec2EigenV(pullParamLine(myfile), B.rows());
 	C = stdVec2EigenRV(pullParamLine(myfile), C.cols());
 
@@ -71,5 +71,49 @@ void plds_adam::stepPlant(Eigen::Vector2d newX, double newU)
     x = newX; //allows overriding x at step, as a solution for switching
     stepPlant(newU);
 }
+
+
+
+
+void plds_noisy::stepPlant(double newU)
+{	plds_adam::stepPlant(newU);
+
+	//to-do: move this to constructor. notably this causes all sorts of issues w/ consts etc.
+	//check hmm_generator for good examples?
+	std::random_device rd; 
+    	std::mt19937 gen(rd()); 
+	std::normal_distribution<double> distr(0.0,sigma);
+
+	y = y+distr(gen);
+	//y = y+sigma*std_gauss(gen);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
