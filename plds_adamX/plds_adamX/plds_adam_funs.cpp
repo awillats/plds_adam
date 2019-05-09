@@ -8,6 +8,7 @@
 
 #include "plds_adam_funs.hpp"
 
+using namespace adam;
 
 void plds_adam::printSys()
 {
@@ -24,8 +25,19 @@ void plds_adam::loadParamsFromTxt()
     
     if (myfile.good())
     {
-        pullParamLine(myfile); //gets nx
-        
+        nX = (int) pullParamNum(myfile); //gets nx
+
+	A = pullParamLine(myfile); A.reshape(nX,nX);
+	B = pullParamLine(myfile);
+	C = pullParamLine(myfile);
+	D = pullParamNum(myfile); 	
+
+        //nX = (int) A.cols();
+        nU = (int) B.n_cols;
+        nY = (int) C.n_rows;
+
+	//namespace dependent
+/*
 	A = stdVec2EigenM(pullParamLine(myfile), A.rows(), A.cols());
        	B = stdVec2EigenV(pullParamLine(myfile), B.rows());
 	C = stdVec2EigenRV(pullParamLine(myfile), C.cols());
@@ -36,6 +48,7 @@ void plds_adam::loadParamsFromTxt()
         nX = (int) A.cols();
         nU = (int) B.cols();
         nY = (int) C.rows();
+*/
         
     }
     else
@@ -48,7 +61,8 @@ void plds_adam::loadParamsFromTxt()
 
 void plds_adam::resetSys()
 {
-    x = Eigen::Vector2d::Zero(nX);
+    //x = Eigen::Vector2d::Zero(nX); //namespace dependent
+    x.fill(0);
     y = 0;
     u = 0;
 }
@@ -63,17 +77,18 @@ void plds_adam::initSys()
 void plds_adam::stepPlant(double newU)
 {
     u = newU;
-    x = A*x + B*u; //+noise
-    y = C*x + D*u;  //+noise
+    x = arma::vectorise(A*x + B*u); //+noise
+    y = arma::as_scalar(C*x + D*u);
 }
-void plds_adam::stepPlant(Eigen::Vector2d newX, double newU)
+void plds_adam::stepPlant(Vec newX, double newU)
 {
     x = newX; //allows overriding x at step, as a solution for switching
     stepPlant(newU);
 }
 
 
-
+///////////////////////////////////////////////////////////////////////////////////////PLDS_NOISY
+//class is secretly gLDS
 
 void plds_noisy::stepPlant(double newU)
 {	plds_adam::stepPlant(newU);
@@ -82,10 +97,13 @@ void plds_noisy::stepPlant(double newU)
 	//check hmm_generator for good examples?
 	std::random_device rd; 
     	std::mt19937 gen(rd()); 
-	std::normal_distribution<double> distr(0.0,sigma);
+
+	data_t mu = 0.0;
+
+	std::normal_distribution<double> distr(mu,sigma);
 
 	y = y+distr(gen);
-	//y = y+sigma*std_gauss(gen);
+
 }
 
 

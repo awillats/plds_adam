@@ -23,6 +23,28 @@
 #include <eigen/Eigen/Dense>
 #include <StAC_rtxi/dataFuns.h>
 
+#include <dynCtrlEst>
+
+
+namespace adam{
+	typedef double data_t;
+	typedef std::vector<data_t> stdVec;
+	typedef arma::Row<data_t> RowVec;
+	typedef arma::Col<data_t> Vec;
+	typedef arma::Mat<data_t> Mat;
+	typedef arma::subview_col<data_t> SubVec;
+	typedef arma::subview<data_t> SubMat;
+}
+
+namespace adam_e{
+	typedef double data_t;
+	typedef std::vector<data_t> stdVec;
+	typedef Eigen::RowVector2d RowVec;
+	typedef Eigen::Vector2d Vec;
+	typedef Eigen::Matrix2d Mat; //generalize to Xd
+	//typedef arma::subview_col<data_t> SubVec;
+//	typedef arma::subview<data_t> SubMat;
+}
 
 class plds_adam{
     //vars
@@ -36,16 +58,16 @@ class plds_adam{
         int nY;
 
     
-        Eigen::Matrix2d A;
-        Eigen::Vector2d B;
-        Eigen::RowVector2d C; //generalize later
-        double D; //why are these floats not doubles?
+        adam::Mat A; //Eigen::Matrix2d A;
+        adam::Vec B; //Eigen::Vector2d B;
+        adam::RowVec C; //Eigen::RowVector2d C; 
+        adam::data_t D; 
     
-        Eigen::Vector2d x;
-        double y;
-        double u;
+        adam::Vec x;
+        adam::data_t y;
+        adam::data_t u;
     
-        double dt;
+        adam::data_t dt;
     
         plds_adam(): nX(2), nU(1) , nY(1){ initSys();};
     
@@ -58,7 +80,7 @@ class plds_adam{
 
 
         void stepPlant(double);
-	void stepPlant(Eigen::Vector2d, double);    
+	void stepPlant(adam::Vec, double);    
 
         //void randInit();
     
