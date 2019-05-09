@@ -16,9 +16,12 @@
 #include <sstream>
 #include <string>
 
+#include <random>
 
-#include "../../../../module_help/eigen/Eigen/Dense"
-#include "../../../../module_help/StAC_rtxi/dataFuns.h" //something weird about using this
+
+//from module_help
+#include <eigen/Eigen/Dense>
+#include <StAC_rtxi/dataFuns.h>
 
 
 class plds_adam{
@@ -44,29 +47,43 @@ class plds_adam{
     
         double dt;
     
-    
         plds_adam(): nX(2), nU(1) , nY(1){ initSys();};
     
         //plds_adam(): nX(2), nU(1) , nY(1){ ;};
 
-
-    
         void printSys();
         void loadParamsFromTxt();
         void resetSys();
         void initSys();
-    
+
+
         void stepPlant(double);
-    
+	void stepPlant(Eigen::Vector2d, double);    
+
         //void randInit();
-        //void printMyParams();
-        //void loadParamsFromTxt();
-        //void initSys();
-        //void stepPlant();
     
+    private:   
+};
+
+class plds_noisy : public plds_adam{
     private:
-    
-    
+	//std::random_device rd; 
+    	//std::mt19937 gen; 
+
+    public:
+
+	double sigma;
+
+         plds_noisy(): plds_adam(), sigma(0.1)
+	{
+		initSys();
+	};
+
+	void stepPlant(double);
+	
+
+        // plds_noisy(double sig):  nX(2), nU(1) , nY(1), sigma(sig) {initSys();};
+	
 };
 
 
