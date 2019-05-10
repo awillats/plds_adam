@@ -79,8 +79,6 @@ void plds_adam::initSys()
 void plds_adam::stepPlant(double newU)
 {
     u = newU;
-    //x=x;
-    //y=y;
     x = arma::vectorise(    A*x + B*u    ); //+noise
     y = arma::as_scalar(    C*x + D*u    );
  
@@ -95,23 +93,32 @@ void plds_adam::stepPlant(Vec newX, double newU)
 ///////////////////////////////////////////////////////////////////////////////////////PLDS_NOISY
 //class is secretly gLDS
 
+/*
+void plds_noisy::initSys()
+{
+	plds_adam::initSys();
+	//Q = 0.001*Mat(nX,nX,arma::fill::eye);
+	//R = 0.1;
+}
+
+void plds_noisy::printSys()
+{
+    plds_adam::printSys();
+    //std::cout <<"Here is the matrix Q:\n" << Q << "\n";
+    //std::cout <<"Here is the matrix R:\n" << R << "\n";
+}
+*/
+
 void plds_noisy::stepPlant(double newU)
 {	
 
+    Vec w = 0.00001*arma::vec(nX, arma::fill::randn);
+    Vec v = 0.00001*arma::vec(nY, arma::fill::randn);
+    //std::cout << w <<"," << v;
 
-	plds_adam::stepPlant(newU);
-
-	//to-do: move this to constructor. notably this causes all sorts of issues w/ consts etc.
-	//check hmm_generator for good examples?
-	std::random_device rd; 
-    	std::mt19937 gen(rd()); 
-
-	data_t mu = 0.0;
-
-	std::normal_distribution<double> distr(mu,sigma);
-
-	y = y+distr(gen);
-
+    u = newU;
+    x = arma::vectorise(    A*x + B*u  +w  ); //+noise
+    y = arma::as_scalar(    C*x + D*u  +v  );
 }
 
 

@@ -95,12 +95,15 @@ class plds_noisy : public plds_adam{
     public:
 
 	double sigma;
+	adam::Mat Q;
+	adam::Mat R;
 
-         plds_noisy(): plds_adam(), sigma(0.1)
+         plds_noisy(): plds_adam()
 	{
-		initSys();
+	    initSys();
 	};
-
+	//void initSys();
+	//void printSys();
 	void stepPlant(double);
 	
 
