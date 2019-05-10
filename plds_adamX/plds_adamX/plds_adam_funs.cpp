@@ -97,6 +97,7 @@ void plds_adam::stepPlant(Vec newX, double newU)
 void glds_adam::initSys()
 {
 	plds_adam::initSys();
+ 		//to do: load these from file
 	Q = qmag*Mat(nX,nX,arma::fill::eye);
 	R = rmag;
 }
@@ -112,12 +113,12 @@ void glds_adam::printSys()
 void glds_adam::stepPlant(double newU)
 {	
 
-    Vec w = Q*arma::vec(nX, arma::fill::randn);
+    Vec w = Q*arma::vec(nX, arma::fill::randn);//should be sqrt(Q)
     Vec v = R*arma::vec(nY, arma::fill::randn);
 
     u = newU;
-    x = arma::vectorise(    A*x + B*u  +w  ); //+noise
-    y = arma::as_scalar(    C*x + D*u  +v  );
+    x = arma::vectorise(    A*x + B*u  + w  ); //+noise
+    y = arma::as_scalar(    C*x + D*u  + v  );
 }
 
 
