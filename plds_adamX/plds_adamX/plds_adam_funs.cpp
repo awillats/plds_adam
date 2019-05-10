@@ -62,6 +62,8 @@ void plds_adam::loadParamsFromTxt()
 void plds_adam::resetSys()
 {
     //x = Eigen::Vector2d::Zero(nX); //namespace dependent
+
+    x.set_size(nX);    
     x.fill(0);
     y = 0;
     u = 0;
@@ -77,9 +79,11 @@ void plds_adam::initSys()
 void plds_adam::stepPlant(double newU)
 {
     u = newU;
+    //x=x;
+    //y=y;
     x = arma::vectorise(    A*x + B*u    ); //+noise
     y = arma::as_scalar(    C*x + D*u    );
-    y = C*x;
+ 
 }
 void plds_adam::stepPlant(Vec newX, double newU)
 {
