@@ -93,28 +93,27 @@ void plds_adam::stepPlant(Vec newX, double newU)
 ///////////////////////////////////////////////////////////////////////////////////////PLDS_NOISY
 //class is secretly gLDS
 
-/*
+
 void plds_noisy::initSys()
 {
 	plds_adam::initSys();
-	//Q = 0.001*Mat(nX,nX,arma::fill::eye);
-	//R = 0.1;
+	Q = qmag*Mat(nX,nX,arma::fill::eye);
+	R = rmag;
 }
 
 void plds_noisy::printSys()
 {
     plds_adam::printSys();
-    //std::cout <<"Here is the matrix Q:\n" << Q << "\n";
-    //std::cout <<"Here is the matrix R:\n" << R << "\n";
+    std::cout <<"Here is the matrix Q:\n" << Q << "\n";
+    std::cout <<"Here is the matrix R:\n" << R << "\n";
 }
-*/
+
 
 void plds_noisy::stepPlant(double newU)
 {	
 
-    Vec w = 0.00001*arma::vec(nX, arma::fill::randn);
-    Vec v = 0.00001*arma::vec(nY, arma::fill::randn);
-    //std::cout << w <<"," << v;
+    Vec w = Q*arma::vec(nX, arma::fill::randn);
+    Vec v = R*arma::vec(nY, arma::fill::randn);
 
     u = newU;
     x = arma::vectorise(    A*x + B*u  +w  ); //+noise

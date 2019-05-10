@@ -94,16 +94,17 @@ class plds_noisy : public plds_adam{
 
     public:
 
-	double sigma;
+	double qmag;
+	double rmag;
 	adam::Mat Q;
 	adam::Mat R;
 
-         plds_noisy(): plds_adam()
+         plds_noisy(): plds_adam(), qmag(2e-2), rmag(1e-3)
 	{
 	    initSys();
 	};
-	//void initSys();
-	//void printSys();
+	void initSys();
+	void printSys();
 	void stepPlant(double);
 	
 
