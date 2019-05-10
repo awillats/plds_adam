@@ -77,8 +77,9 @@ void plds_adam::initSys()
 void plds_adam::stepPlant(double newU)
 {
     u = newU;
-    x = arma::vectorise(A*x + B*u); //+noise
-    y = arma::as_scalar(C*x + D*u);
+    x = arma::vectorise(    A*x + B*u    ); //+noise
+    y = arma::as_scalar(    C*x + D*u    );
+    y = C*x;
 }
 void plds_adam::stepPlant(Vec newX, double newU)
 {
@@ -91,7 +92,10 @@ void plds_adam::stepPlant(Vec newX, double newU)
 //class is secretly gLDS
 
 void plds_noisy::stepPlant(double newU)
-{	plds_adam::stepPlant(newU);
+{	
+
+
+	plds_adam::stepPlant(newU);
 
 	//to-do: move this to constructor. notably this causes all sorts of issues w/ consts etc.
 	//check hmm_generator for good examples?
