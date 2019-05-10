@@ -94,14 +94,14 @@ void plds_adam::stepPlant(Vec newX, double newU)
 //class is secretly gLDS
 
 
-void plds_noisy::initSys()
+void glds_adam::initSys()
 {
 	plds_adam::initSys();
 	Q = qmag*Mat(nX,nX,arma::fill::eye);
 	R = rmag;
 }
 
-void plds_noisy::printSys()
+void glds_adam::printSys()
 {
     plds_adam::printSys();
     std::cout <<"Here is the matrix Q:\n" << Q << "\n";
@@ -109,7 +109,7 @@ void plds_noisy::printSys()
 }
 
 
-void plds_noisy::stepPlant(double newU)
+void glds_adam::stepPlant(double newU)
 {	
 
     Vec w = Q*arma::vec(nX, arma::fill::randn);

@@ -87,7 +87,7 @@ class plds_adam{
     private:   
 };
 
-class plds_noisy : public plds_adam{
+class glds_adam : public plds_adam{
     private:
 	//std::random_device rd; 
     	//std::mt19937 gen; 
@@ -99,18 +99,22 @@ class plds_noisy : public plds_adam{
 	adam::Mat Q;
 	adam::Mat R;
 
-         plds_noisy(): plds_adam(), qmag(2e-2), rmag(1e-3)
+         glds_adam(): plds_adam(), qmag(2e-2), rmag(1e-3)
 	{
 	    initSys();
 	};
 	void initSys();
 	void printSys();
 	void stepPlant(double);
-	
-
-        // plds_noisy(double sig):  nX(2), nU(1) , nY(1), sigma(sig) {initSys();};
-	
 };
 
 
 #endif /* plds_adam_funs_hpp */
+
+
+
+
+
+
+
+
