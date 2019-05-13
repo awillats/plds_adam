@@ -1,13 +1,13 @@
 //
-//  plds_adam_funs.hpp
-//  plds_adamX
+//  lds_adam_funs.hpp
+//  lds_adamX
 //
 //  Created by Adam Willats on 4/3/19.
 //  Copyright © 2019 Adam Willats. All rights reserved.
 //
 
-#ifndef plds_adam_funs_hpp
-#define plds_adam_funs_hpp
+#ifndef lds_adam_funs_hpp
+#define lds_adam_funs_hpp
 
 #include <stdio.h>
 
@@ -46,7 +46,7 @@ namespace adam_e{
 //	typedef arma::subview<data_t> SubMat;
 }
 
-class plds_adam{
+class lds_adam{
     //vars
     //empty constructor
     //real constructor 1
@@ -69,9 +69,9 @@ class plds_adam{
     
         adam::data_t dt;
     
-        plds_adam(): nX(2), nU(1) , nY(1){ initSys();};
+        lds_adam(): nX(2), nU(1) , nY(1){ initSys();};
     
-        //plds_adam(): nX(2), nU(1) , nY(1){ ;};
+        //lds_adam(): nX(2), nU(1) , nY(1){ ;};
 
         void printSys();
         void loadParamsFromTxt();
@@ -87,7 +87,11 @@ class plds_adam{
     private:   
 };
 
-class glds_adam : public plds_adam{
+
+////////////////////////////////////////////////////////////////////////////// GLDS CLASSDEF
+
+
+class glds_adam : public lds_adam{
     private:
 	//std::random_device rd; 
     	//std::mt19937 gen; 
@@ -99,7 +103,7 @@ class glds_adam : public plds_adam{
 	adam::Mat Q;
 	adam::Mat R;
 
-         glds_adam(): plds_adam(), qmag(2e-2), rmag(1e-3)
+         glds_adam(): lds_adam(), qmag(2e-2), rmag(1e-3)
 	{
 	    initSys();
 	};
@@ -109,7 +113,7 @@ class glds_adam : public plds_adam{
 };
 
 
-#endif /* plds_adam_funs_hpp */
+#endif /* lds_adam_funs_hpp */
 
 
 

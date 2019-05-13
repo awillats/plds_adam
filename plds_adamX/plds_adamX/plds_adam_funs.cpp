@@ -1,6 +1,6 @@
 //
-//  plds_adam_funs.cpp
-//  plds_adamX
+//  lds_adam_funs.cpp
+//  lds_adamX
 //
 //  Created by Adam Willats on 4/3/19.
 //  Copyright © 2019 Adam Willats. All rights reserved.
@@ -10,14 +10,14 @@
 
 using namespace adam;
 
-void plds_adam::printSys()
+void lds_adam::printSys()
 {
     std::cout <<"Here is the matrix A:\n" << A << "\n";
     std::cout <<"Here is the matrix B:\n" << B << "\n";
     std::cout <<"Here is the matrix C:\n" << C << "\n";
     std::cout <<"Here is the matrix D:\n" << D << "\n";
 }
-void plds_adam::loadParamsFromTxt()
+void lds_adam::loadParamsFromTxt()
 {
 	std::string homepath = getenv("HOME");
 	std::ifstream myfile;
@@ -59,7 +59,7 @@ void plds_adam::loadParamsFromTxt()
 
 }
 
-void plds_adam::resetSys()
+void lds_adam::resetSys()
 {
     //x = Eigen::Vector2d::Zero(nX); //namespace dependent
 
@@ -69,21 +69,21 @@ void plds_adam::resetSys()
     u = 0;
 }
 
-void plds_adam::initSys()
+void lds_adam::initSys()
 {
     loadParamsFromTxt();
     resetSys();
     printSys();
 }
 
-void plds_adam::stepPlant(double newU)
+void lds_adam::stepPlant(double newU)
 {
     u = newU;
     x = arma::vectorise(    A*x + B*u    ); //+noise
     y = arma::as_scalar(    C*x + D*u    );
  
 }
-void plds_adam::stepPlant(Vec newX, double newU)
+void lds_adam::stepPlant(Vec newX, double newU)
 {
     x = newX; //allows overriding x at step, as a solution for switching
     stepPlant(newU);
@@ -96,7 +96,7 @@ void plds_adam::stepPlant(Vec newX, double newU)
 
 void glds_adam::initSys()
 {
-	plds_adam::initSys();
+	lds_adam::initSys();
  		//to do: load these from file
 	Q = qmag*Mat(nX,nX,arma::fill::eye);
 	R = rmag;
@@ -104,7 +104,7 @@ void glds_adam::initSys()
 
 void glds_adam::printSys()
 {
-    plds_adam::printSys();
+    lds_adam::printSys();
     std::cout <<"Here is the matrix Q:\n" << Q << "\n";
     std::cout <<"Here is the matrix R:\n" << R << "\n";
 }
