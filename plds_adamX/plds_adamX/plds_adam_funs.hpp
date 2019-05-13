@@ -83,9 +83,6 @@ class lds_adam{
 	void stepPlant(adam::Vec, double);  
 	void importProps(lds_adam);
 
-	friend void copyProps(lds_adam, lds_adam);
-  
-
         //void randInit();
     
     private:   
@@ -115,8 +112,6 @@ class glds_adam : public lds_adam{
 	void printSys();
 	void stepPlant(double);
 	void importProps(glds_adam);
-
-	friend void copyProps(glds_adam, glds_adam);
 
 }; //end of glds
 

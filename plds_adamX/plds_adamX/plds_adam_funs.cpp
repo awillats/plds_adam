@@ -95,40 +95,8 @@ void lds_adam::importProps(lds_adam sysIn)
 	C = sysIn.C;
 	D = sysIn.D;
 }
-//friend of lds_adam
-void copyProps(lds_adam fromSys, lds_adam toSys)
-{
-	toSys.A = fromSys.A;
-	toSys.B = fromSys.B;
-	toSys.C = fromSys.C;
-	toSys.D = fromSys.D;
-	//toSys.x = fromSys.x;
-	//toSys.y = fromSys.y;
-	//toSys.u = fromSys.u;	
-}
-void copyProps(glds_adam& fromSys, glds_adam& toSys)
-{
 
-	toSys.A = fromSys.A;
-	toSys.B = fromSys.B;
-	toSys.C = fromSys.C;
-	toSys.D = fromSys.D;
 
-	toSys.Q = fromSys.Q;
-	toSys.R = fromSys.R;
-/*
-	toSys.A-> fromSys.A;
-	toSys.B-> fromSys.B;
-	toSys.C-> fromSys.C;
-	toSys.D-> fromSys.D;
-
-	toSys.Q-> fromSys.Q;
-	toSys.R-> fromSys.R;
-
-*/	//toSys.x = fromSys.x;
-	//toSys.y = fromSys.y;
-	//toSys.u = fromSys.u;	
-}
 
 ///////////////////////////////////////////////////////////////////////////////////////GLDS_ADAM
 
@@ -191,13 +159,7 @@ void slds::initSys()
 
 void slds::switchSys(int sys_idx_new)
 {
-
-	if (sys_idx_new==sys_idx) 
-	{
-		//std::cout<<"\n\n no switch needed"<<sys_idx_new;
-		return;
-	}
-	else
+	if (sys_idx_new!=sys_idx) 
 	{
 		if ( ((sys_idx_new+1) > allSys.size()) || (sys_idx_new<0) )
 		{
@@ -208,27 +170,14 @@ void slds::switchSys(int sys_idx_new)
 		{
 			std::cout<<"\n valid idx: "<<sys_idx_new;
 
-			//transfer x
-			//x = (*sysPtr).x; //save "old" x into this
+			sysPtr = std::next(allSys.begin(), sys_idx_new); //point to new sys
+			importProps(*sysPtr); //switch A,B,C,D
 
-			//move sys pointer
-			sysPtr = std::next(allSys.begin(), sys_idx_new);
-			copyProps(*sysPtr, *this); //update this slds's sys matrices
-
-			(*this).importProps(*sysPtr);
-
-			//(*this).B = (*sysPtr).B;
-			(*sysPtr).x = x; //overwrites x at ptrs new location
-
-
-			sys_idx = sys_idx_new;
-
+			sys_idx = sys_idx_new; //update 
 		} // end if-else
 
-
-	}//end else
+	}//endif
 }
-
 
 
 
