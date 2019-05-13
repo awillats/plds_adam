@@ -88,7 +88,13 @@ void lds_adam::stepPlant(Vec newX, double newU)
     x = newX; //allows overriding x at step, as a solution for switching
     stepPlant(newU);
 }
-
+void lds_adam::importProps(lds_adam sysIn)
+{
+	A = sysIn.A;
+	B = sysIn.B;
+	C = sysIn.C;
+	D = sysIn.D;
+}
 //friend of lds_adam
 void copyProps(lds_adam fromSys, lds_adam toSys)
 {
@@ -100,8 +106,9 @@ void copyProps(lds_adam fromSys, lds_adam toSys)
 	//toSys.y = fromSys.y;
 	//toSys.u = fromSys.u;	
 }
-void copyProps(glds_adam fromSys, glds_adam toSys)
+void copyProps(glds_adam& fromSys, glds_adam& toSys)
 {
+
 	toSys.A = fromSys.A;
 	toSys.B = fromSys.B;
 	toSys.C = fromSys.C;
@@ -109,8 +116,16 @@ void copyProps(glds_adam fromSys, glds_adam toSys)
 
 	toSys.Q = fromSys.Q;
 	toSys.R = fromSys.R;
+/*
+	toSys.A-> fromSys.A;
+	toSys.B-> fromSys.B;
+	toSys.C-> fromSys.C;
+	toSys.D-> fromSys.D;
 
-	//toSys.x = fromSys.x;
+	toSys.Q-> fromSys.Q;
+	toSys.R-> fromSys.R;
+
+*/	//toSys.x = fromSys.x;
 	//toSys.y = fromSys.y;
 	//toSys.u = fromSys.u;	
 }
@@ -145,6 +160,17 @@ void glds_adam::stepPlant(double newU)
     y = arma::as_scalar(    C*x + D*u  + v  );
 }
 
+void glds_adam::importProps(glds_adam sysIn)
+{
+	A = sysIn.A;
+	B = sysIn.B;
+	C = sysIn.C;
+	D = sysIn.D;
+	Q = sysIn.Q;
+	R = sysIn.R;
+}
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////////SLDS_ADAM
 
@@ -166,22 +192,39 @@ void slds::initSys()
 void slds::switchSys(int sys_idx_new)
 {
 
-	if ((sys_idx_new==sys_idx) || ((sys_idx_new+1) > allSys.size()) || (sys_idx_new<0))
+	if (sys_idx_new==sys_idx) 
 	{
+		//std::cout<<"\n\n no switch needed"<<sys_idx_new;
 		return;
 	}
 	else
 	{
+		if ( ((sys_idx_new+1) > allSys.size()) || (sys_idx_new<0) )
+		{
+			std::cout<<"\n\n idx violation: "<<sys_idx_new;
+			return;
+		}
+		else
+		{
+			std::cout<<"\n valid idx: "<<sys_idx_new;
 
-	//lds_adam currentSys = *sysPtr;
-	//std::cout<<currentSys.x;
-	//transfer x
-	x = (*sysPtr).x; //save "old" x into this
+			//transfer x
+			//x = (*sysPtr).x; //save "old" x into this
 
-	//move sys pointer
-	std::advance(sysPtr, sys_idx_new);//does this auto-check if we're within bounds?
-	//copyProps(*sysPtr, *this); //update this slds's sys matrices
-	(*sysPtr).x = x; //overwrites x at ptrs new location
+			//move sys pointer
+			sysPtr = std::next(allSys.begin(), sys_idx_new);
+			copyProps(*sysPtr, *this); //update this slds's sys matrices
+
+			(*this).importProps(*sysPtr);
+
+			//(*this).B = (*sysPtr).B;
+			(*sysPtr).x = x; //overwrites x at ptrs new location
+
+
+			sys_idx = sys_idx_new;
+
+		} // end if-else
+
 
 	}//end else
 }

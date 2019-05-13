@@ -81,7 +81,7 @@ class lds_adam{
 
         void stepPlant(double);
 	void stepPlant(adam::Vec, double);  
-
+	void importProps(lds_adam);
 
 	friend void copyProps(lds_adam, lds_adam);
   
@@ -114,6 +114,7 @@ class glds_adam : public lds_adam{
 	void initSys();
 	void printSys();
 	void stepPlant(double);
+	void importProps(glds_adam);
 
 	friend void copyProps(glds_adam, glds_adam);
 
@@ -144,7 +145,7 @@ class slds : public lds_adam{
 
 	void initSys();
 	void switchSys(int);
-	
+
 
 }; //end of slds
 
