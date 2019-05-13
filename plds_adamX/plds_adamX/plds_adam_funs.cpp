@@ -89,9 +89,33 @@ void lds_adam::stepPlant(Vec newX, double newU)
     stepPlant(newU);
 }
 
+//friend of lds_adam
+void copyProps(lds_adam fromSys, lds_adam toSys)
+{
+	toSys.A = fromSys.A;
+	toSys.B = fromSys.B;
+	toSys.C = fromSys.C;
+	toSys.D = fromSys.D;
+	//toSys.x = fromSys.x;
+	//toSys.y = fromSys.y;
+	//toSys.u = fromSys.u;	
+}
+void copyProps(glds_adam fromSys, glds_adam toSys)
+{
+	toSys.A = fromSys.A;
+	toSys.B = fromSys.B;
+	toSys.C = fromSys.C;
+	toSys.D = fromSys.D;
 
-///////////////////////////////////////////////////////////////////////////////////////PLDS_NOISY
-//class is secretly gLDS
+	toSys.Q = fromSys.Q;
+	toSys.R = fromSys.R;
+
+	//toSys.x = fromSys.x;
+	//toSys.y = fromSys.y;
+	//toSys.u = fromSys.u;	
+}
+
+///////////////////////////////////////////////////////////////////////////////////////GLDS_ADAM
 
 
 void glds_adam::initSys()
@@ -122,10 +146,45 @@ void glds_adam::stepPlant(double newU)
 }
 
 
+///////////////////////////////////////////////////////////////////////////////////////SLDS_ADAM
 
 
+void slds::initSys()
+{
+   std::cout<<"\n DEBUG: SLDS PRINTING\n";
+
+    allSys.push_back(glds_adam());
+    allSys.push_back(glds_adam());
+    allSys[1].B = allSys[0].B*switchScale; //hardcoded default
+    std::cout<<"\n DEBUG: END SLDS PRINTING\n";
+
+   sysPtr = allSys.begin();
+   sys_idx=0;
+}
 
 
+void slds::switchSys(int sys_idx_new)
+{
+
+	if ((sys_idx_new==sys_idx) || ((sys_idx_new+1) > allSys.size()) || (sys_idx_new<0))
+	{
+		return;
+	}
+	else
+	{
+
+	//lds_adam currentSys = *sysPtr;
+	//std::cout<<currentSys.x;
+	//transfer x
+	x = (*sysPtr).x; //save "old" x into this
+
+	//move sys pointer
+	std::advance(sysPtr, sys_idx_new);//does this auto-check if we're within bounds?
+	//copyProps(*sysPtr, *this); //update this slds's sys matrices
+	(*sysPtr).x = x; //overwrites x at ptrs new location
+
+	}//end else
+}
 
 
 

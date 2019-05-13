@@ -80,7 +80,11 @@ class lds_adam{
 
 
         void stepPlant(double);
-	void stepPlant(adam::Vec, double);    
+	void stepPlant(adam::Vec, double);  
+
+
+	friend void copyProps(lds_adam, lds_adam);
+  
 
         //void randInit();
     
@@ -110,9 +114,49 @@ class glds_adam : public lds_adam{
 	void initSys();
 	void printSys();
 	void stepPlant(double);
-};
+
+	friend void copyProps(glds_adam, glds_adam);
+
+}; //end of glds
 
 
+////////////////////////////////////////////////////////////////////////////// SLDS CLASSDEF
+
+//Switched linear dynamical systems ("vector of sys" approach. should also consider tensor-valued properties approach)
+
+class slds : public lds_adam{
+    private:
+	//void appendSys();
+	//have a family of push/pop options??
+
+    public:
+	
+	std::vector<lds_adam> allSys;
+	std::vector<lds_adam>::iterator sysPtr;
+	int sys_idx;
+	double switchScale;
+
+	slds(): lds_adam(), switchScale(1.4)
+	{
+		initSys();
+
+	};
+
+	void initSys();
+	void switchSys(int);
+	
+
+}; //end of slds
+
+
+/*
+class slds_tensor : public lds_adam{
+    private:
+	void appendSys();
+    public:
+	void switchPlant();
+}
+*/
 #endif /* lds_adam_funs_hpp */
 
 
