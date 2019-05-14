@@ -29,6 +29,7 @@ class lds_ctrl_adam {
         int nU;
         int nY;
 
+	bool isSilent;
         adam::data_t r;
 	adam::data_t u;
 	adam::Vec x;
@@ -38,7 +39,9 @@ class lds_ctrl_adam {
 
 	lds_ctrl_adam(): nX(2), nU(1) , nY(1){ loadGains();};
 
+	
 	void loadGains();
+	void toggleSilent();
 	double calcU(adam::data_t, adam::Vec);
 	void printGains();
 };

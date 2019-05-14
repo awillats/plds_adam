@@ -21,6 +21,13 @@ void lds_ctrl_adam::loadGains()
 	nbar = pullParamNum(myfile);
 
 	myfile.close();
+
+	isSilent = false;
+}
+
+void lds_ctrl_adam::toggleSilent()
+{
+	isSilent = (isSilent==false); //heh
 }
 
 data_t lds_ctrl_adam::calcU(data_t r_in, Vec x_in)
@@ -28,7 +35,7 @@ data_t lds_ctrl_adam::calcU(data_t r_in, Vec x_in)
 	r=r_in;
 	x=x_in;
 
-	u = arma::as_scalar(    r*nbar - K*x    );
+	u = (isSilent ? arma::as_scalar(    r*nbar - K*x    ) : 0);
 
 	return u;
 }
