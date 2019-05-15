@@ -35,7 +35,7 @@ data_t lds_ctrl_adam::calcU(data_t r_in, Vec x_in)
 	r=r_in;
 	x=x_in;
 
-	u = (isSilent ? arma::as_scalar(    r*nbar - K*x    ) : 0);
+	u = (isSilent ? 0 : arma::as_scalar(    r*nbar - K*x    ));
 
 	return u;
 }
