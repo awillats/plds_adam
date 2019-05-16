@@ -57,7 +57,7 @@ void glds_obsv::loadParams()
 void glds_obsv::predict(data_t u_in, data_t ymeas)
 {
 	u=u_in;
-	Mat I = aram::eye<Mat>(nX,nX);
+	Mat I = arma::eye<Mat>(nX,nX);
 
 //PREDICTION STEP
    // a priori error covariance
@@ -87,6 +87,17 @@ void glds_obsv::toggleUpdating()
 	isUpdating = ((isUpdating==1) ? 0 : 1);
 }
 
+void glds_obsv::importProps(glds_obsv sysIn)
+{
+	A = sysIn.A;
+	B = sysIn.B;
+	C = sysIn.C;
+	D = sysIn.D;
+	Q = sysIn.Q;
+	R = sysIn.R;
+
+	P = sysIn.P;
+}
 
 
 ////////////////////////////////////////////////////
@@ -103,9 +114,23 @@ void s_glds_obsv::initSys()
 
    sysPtr = allSys.begin();
    sys_idx=0;
+
+   glds_obsv::importProps(*sysPtr);
+}
+
+void s_glds_obsv::resetSys()
+{
+	glds_obsv::resetSys();
 }
 
 
+void s_glds_obsv::predict(data_t u_in, data_t ymeas)
+{
+	(*sysPtr).predict(u_in,ymeas);
+	x = (*sysPtr).x;
+	y= (*sysPtr).y;
+
+}
 
 
 

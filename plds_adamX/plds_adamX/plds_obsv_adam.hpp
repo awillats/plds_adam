@@ -62,23 +62,29 @@ class glds_obsv : public glds_adam{
 	void update();
 	void printParams();
 	void toggleUpdating();
+	void importProps(glds_obsv sysIn);
 };
 
 
-class s_glds_obsv : public slds{
+class s_glds_obsv : public slds, public glds_obsv{
+    public:
 	//only need to override init methods!
 	
-	//std::vector<glds_obsv> allSys;
-	//std::vector<glds_obsv>::iterator sysPtr;
+	std::vector<glds_obsv> allSys;
+	std::vector<glds_obsv>::iterator sysPtr;
 	//int sys_idx;
 
+	adam::Vec x;
+	adam::data_t y;
 
-	s_glds_obsv()
+//:slds()
+	s_glds_obsv() 
 	{
 		initSys();
 	}
-
+	void resetSys();
 	void initSys();
+	void predict(adam::data_t, adam::data_t);
 	//void switchSys(int);
 
 };
