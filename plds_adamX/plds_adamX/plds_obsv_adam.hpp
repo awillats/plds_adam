@@ -26,7 +26,6 @@
 //  
 class lds_obsv : public lds_adam{
     public:
-
 	adam::data_t ymeas;
 	adam::Vec K;
 
@@ -35,14 +34,11 @@ class lds_obsv : public lds_adam{
 		loadObsvParams();
 		std::cout<<"made luenberger"<<x;
 		printParams();
-	
 	};
 
 	void loadObsvParams();
 	void printParams();
 	void predict(adam::data_t, adam::data_t);
-
-
 };
 
 class glds_obsv : public glds_adam{
@@ -51,9 +47,7 @@ class glds_obsv : public glds_adam{
     public:
 	adam::data_t ymeas;
 	adam::Vec K;
-
 	adam::Mat P; //covar of estimate
-
 
 	int isUpdating;
 
@@ -67,9 +61,7 @@ class glds_obsv : public glds_adam{
 	void predict(adam::data_t, adam::data_t);
 	void update();
 	void printParams();
-
 	void toggleUpdating();
-
 };
 
 /*

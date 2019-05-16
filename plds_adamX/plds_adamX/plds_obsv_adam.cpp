@@ -17,8 +17,6 @@ void lds_obsv::predict(data_t u_in, data_t ymeas_in)
 
 	x = A*x + B*u - K*(y-ymeas);   //transpose?
 	y = arma::as_scalar(  C*x  );
-
-	//std::cout<<"prediction";
 }
 
 void lds_obsv::loadObsvParams()
@@ -31,7 +29,6 @@ void lds_obsv::loadObsvParams()
     {
         int nX = (int) pullParamNum(myfile); //gets nx
 	K = pullParamLine(myfile);
-        
     }
     else
     {
@@ -60,18 +57,13 @@ void glds_obsv::loadParams()
 void glds_obsv::predict(data_t u_in, data_t ymeas)
 {
 	u=u_in;
-
+	Mat I = aram::eye<Mat>(nX,nX);
 
 //PREDICTION STEP
-	//deterministic update
-   // a priori state estimate
-	//x=Ax+Bu;//lds_adam::stepPlant(u_in); 	
    // a priori error covariance
 	P = A*P*A.t() + Q;
 
 //UPDATE STEP
-   //innovation
-	//data_t y_res = ymeas - y;
    //innovation covariance
 	Mat S = R + C*P*C.t(); 
    //optimal gain
@@ -80,10 +72,7 @@ void glds_obsv::predict(data_t u_in, data_t ymeas)
 	x = A*x + B*u + (K*(ymeas - y))*isUpdating;
 
    // a post. covar
-	Mat I_KC = arma::eye<Mat>(nX,nX) - K*C;
-	P = (I_KC) * P;
-      //P = (I_KC)*P*(I_KC.t()) + K*R*K.t(); //Joseph form
-
+	P = (I-K*C) * P;
 
 	y = arma::as_scalar(C*x);
 }
