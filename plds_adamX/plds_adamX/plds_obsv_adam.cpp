@@ -60,31 +60,28 @@ void glds_obsv::loadParams()
 void glds_obsv::predict(data_t u_in, data_t ymeas)
 {
 	u=u_in;
+
+
 //PREDICTION STEP
 	//deterministic update
    // a priori state estimate
 	//x=Ax+Bu;//lds_adam::stepPlant(u_in); 	
    // a priori error covariance
-	P = A*P*A.t() + Q; //{1}
+	P = A*P*A.t() + Q;
 
 //UPDATE STEP
    //innovation
 	//data_t y_res = ymeas - y;
    //innovation covariance
-	Mat S = R + C*P*C.t(); //{2}
-
-
-
+	Mat S = R + C*P*C.t(); 
    //optimal gain
-	K = P*C.t()*S.i(); //{3}
-
+	K = P*C.t()*S.i();
    // a posteriori updates
 	x = A*x + B*u + (K*(ymeas - y))*isUpdating;
 
    // a post. covar
 	Mat I_KC = arma::eye<Mat>(nX,nX) - K*C;
-
-	P = (I_KC) * P; //{4}
+	P = (I_KC) * P;
       //P = (I_KC)*P*(I_KC.t()) + K*R*K.t(); //Joseph form
 
 
