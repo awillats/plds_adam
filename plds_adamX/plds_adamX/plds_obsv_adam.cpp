@@ -53,12 +53,13 @@ void lds_obsv::printParams()
 void glds_obsv::loadParams()
 {
 	//lds_obsv::loadObsvParams();
-	P = 1e-3*arma::eye<Mat>(nX,nX);
+	P = pmag*arma::eye<Mat>(nX,nX);
+	isUpdating = 1;
 }
 
 void glds_obsv::predict(data_t u_in, data_t ymeas)
 {
-
+	u=u_in;
 //PREDICTION STEP
 	//deterministic update
    // a priori state estimate
@@ -78,7 +79,7 @@ void glds_obsv::predict(data_t u_in, data_t ymeas)
 	K = P*C.t()*S.i(); //{3}
 
    // a posteriori updates
-	x = A*x + B*u + K*(ymeas - y);
+	x = A*x + B*u + (K*(ymeas - y))*isUpdating;
 
    // a post. covar
 	Mat I_KC = arma::eye<Mat>(nX,nX) - K*C;
@@ -95,7 +96,10 @@ void glds_obsv::printParams()
 	glds_adam::printSys();
 }
 
-
+void glds_obsv::toggleUpdating()
+{
+	isUpdating = ((isUpdating==1) ? 0 : 1);
+}
 
 
 

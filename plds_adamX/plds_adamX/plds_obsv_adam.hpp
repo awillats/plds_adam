@@ -46,25 +46,29 @@ class lds_obsv : public lds_adam{
 };
 
 class glds_obsv : public glds_adam{
+    private:
+	adam::data_t pmag;
     public:
 	adam::data_t ymeas;
 	adam::Vec K;
 
 	adam::Mat P; //covar of estimate
-	//adam::Vec x_pred; // x^ k+1 | k+1
 
 
-	glds_obsv() : glds_adam()
+	int isUpdating;
+
+	glds_obsv() : glds_adam(), pmag(1e-3)
 	{
 		loadParams();
 		printParams();	
-		//x_pred = x;
 	}
 
 	void loadParams();
 	void predict(adam::data_t, adam::data_t);
 	void update();
 	void printParams();
+
+	void toggleUpdating();
 
 };
 
