@@ -18,7 +18,7 @@ void lds_obsv::predict(data_t u_in, data_t ymeas_in)
 	x = A*x + B*u - K*(y-ymeas);   //transpose?
 	y = arma::as_scalar(  C*x  );
 
-	std::cout<<"prediction";
+	//std::cout<<"prediction";
 }
 
 void lds_obsv::loadObsvParams()
