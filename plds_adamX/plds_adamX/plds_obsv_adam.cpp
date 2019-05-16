@@ -89,4 +89,55 @@ void glds_obsv::toggleUpdating()
 
 
 
+////////////////////////////////////////////////////
+
+
+void s_glds_obsv::initSys()
+{
+   std::cout<<"\n DEBUG: SKF PRINTING\n";
+
+    allSys.push_back(glds_obsv());
+    allSys.push_back(glds_obsv());
+    allSys[1].B = allSys[0].B*switchScale; //hardcoded default
+    std::cout<<"\n DEBUG: END SKF PRINTING\n";
+
+   sysPtr = allSys.begin();
+   sys_idx=0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

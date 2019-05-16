@@ -64,11 +64,25 @@ class glds_obsv : public glds_adam{
 	void toggleUpdating();
 };
 
-/*
-//Kalman Filter
-class glds_obsv : public glds_adam, lds_ctrl_adam{
+
+class s_glds_obsv : public slds{
+	//only need to override init methods!
+	
+	//std::vector<glds_obsv> allSys;
+	//std::vector<glds_obsv>::iterator sysPtr;
+	//int sys_idx;
+
+
+	s_glds_obsv()
+	{
+		initSys();
+	}
+
+	void initSys();
+	//void switchSys(int);
+
 };
-*/
+
 
 
 #endif

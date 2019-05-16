@@ -135,14 +135,16 @@ class slds : public lds_adam{
 	slds(): lds_adam(), switchScale(1.4)
 	{
 		initSys();
-
 	};
 
 	void initSys();
 	void switchSys(int);
 
 
-}; //end of slds
+}; 
+
+
+
 
 
 /*
