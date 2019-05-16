@@ -46,3 +46,57 @@ void lds_obsv::printParams()
 	std::cout<<"\nK_obsv:"<<K;
 }
 
+
+///////////////////////////////////////////////////////////
+
+
+void glds_obsv::loadParams()
+{
+	//lds_obsv::loadObsvParams();
+	P = 1e-3*arma::eye<Mat>(nX,nX);
+}
+
+void glds_obsv::predict(data_t u_in, data_t ymeas)
+{
+
+//PREDICTION STEP
+	//deterministic update
+   // a priori state estimate
+	//x=Ax+Bu;//lds_adam::stepPlant(u_in); 	
+   // a priori error covariance
+	P = A*P*A.t() + Q; //{1}
+
+//UPDATE STEP
+   //innovation
+	//data_t y_res = ymeas - y;
+   //innovation covariance
+	Mat S = R + C*P*C.t(); //{2}
+
+
+
+   //optimal gain
+	K = P*C.t()*S.i(); //{3}
+
+   // a posteriori updates
+	x = A*x + B*u + K*(ymeas - y);
+
+   // a post. covar
+	Mat I_KC = arma::eye<Mat>(nX,nX) - K*C;
+
+	P = (I_KC) * P; //{4}
+      //P = (I_KC)*P*(I_KC.t()) + K*R*K.t(); //Joseph form
+
+
+	y = arma::as_scalar(C*x);
+}
+
+void glds_obsv::printParams()
+{
+	glds_adam::printSys();
+}
+
+
+
+
+
+
