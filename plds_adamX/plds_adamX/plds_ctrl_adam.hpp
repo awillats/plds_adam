@@ -44,11 +44,40 @@ class lds_ctrl_adam {
 	void toggleSilent();
 	double calcU(adam::data_t, adam::Vec);
 	void printGains();
+
+	void importProps(lds_ctrl_adam);
+	void importSignals(lds_ctrl_adam);
 };
 
 
 
 
+///////////////////////////////////////////////
+
+
+class slds_ctrl : public slds, public lds_ctrl_adam{
+    public:
+	//only need to override init methods!
+	
+	std::vector<lds_ctrl_adam> allSys;
+	std::vector<lds_ctrl_adam>::iterator sysPtr;
+	//int sys_idx;
+
+	adam::Vec x;
+	adam::data_t y;
+
+//:slds()
+	slds_ctrl() 
+	{
+		initSys();
+	}
+								void switchSys(int);
+	//void resetSys();
+	void initSys();
+	//void calcU(adam::data_t, adam::data_t);
+	
+
+};
 
 
 

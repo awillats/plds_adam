@@ -94,6 +94,7 @@ void lds_adam::importProps(lds_adam sysIn)
 	B = sysIn.B;
 	C = sysIn.C;
 	D = sysIn.D;
+	std::cout<<"Lds import called";
 }
 
 
@@ -136,6 +137,7 @@ void glds_adam::importProps(glds_adam sysIn)
 	D = sysIn.D;
 	Q = sysIn.Q;
 	R = sysIn.R;
+	std::cout<<"glds import called";
 }
 
 
