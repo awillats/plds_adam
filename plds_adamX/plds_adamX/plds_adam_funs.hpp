@@ -104,7 +104,7 @@ class glds_adam : public lds_adam{
 	adam::Mat Q;
 	adam::Mat R;
 
-         glds_adam(): lds_adam(), qmag(2e-2), rmag(1e-3)
+         glds_adam(): lds_adam(), qmag(0e-4), rmag(0e-4)
 	{
 	    initSys();
 	};
@@ -120,19 +120,19 @@ class glds_adam : public lds_adam{
 
 //Switched linear dynamical systems ("vector of sys" approach. should also consider tensor-valued properties approach)
 
-class slds : public lds_adam{
+class slds : public glds_adam{
     private:
 	//void appendSys();
 	//have a family of push/pop options??
 
     public:
 	
-	std::vector<lds_adam> allSys;
-	std::vector<lds_adam>::iterator sysPtr;
+	std::vector<glds_adam> allSys;
+	std::vector<glds_adam>::iterator sysPtr;
 	int sys_idx;
 	double switchScale;
 
-	slds(): lds_adam(), switchScale(1.4)
+	slds(): glds_adam(), switchScale(1.4)
 	{
 		initSys();
 	};
