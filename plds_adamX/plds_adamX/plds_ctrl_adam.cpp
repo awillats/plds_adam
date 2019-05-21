@@ -51,7 +51,7 @@ void lds_ctrl_adam::importProps(lds_ctrl_adam sysIn)
 	nX = sysIn.nX;
 	K = sysIn.K;
 	nbar = sysIn.nbar;
-	std::cout<<"ctrl import called";
+	std::cout<<"\nctrl import called";
 }
 
 void lds_ctrl_adam::importSignals(lds_ctrl_adam sysIn)
@@ -68,7 +68,7 @@ void slds_ctrl::initSys()
 {
     allSys.push_back(lds_ctrl_adam());
     allSys.push_back(lds_ctrl_adam());
-    allSys[1].K = allSys[0].K/2;//verify
+    allSys[1].K = allSys[0].K/2;//verify this is what we want
 
     sysPtr = allSys.begin();
     sys_idx=0;
@@ -79,9 +79,16 @@ void slds_ctrl::initSys()
 
 void slds_ctrl::switchSys(int switch_idx)
 {
-	//slds::switchSys(switch_idx);
+	std::cout<<"|ctrl switch called|";
+	std::cout<<"$a"<<(*sysPtr).K;
+
+	this->slds::switchSys(switch_idx);
+	std::cout<<"$b"<<(*sysPtr).K;
+
 	std::cout<<"\n new import incoming:";
 	lds_ctrl_adam::importProps(*sysPtr);
+	
+	std::cout<<"$c"<<(*sysPtr).K;
 }
 
 /*

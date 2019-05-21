@@ -67,11 +67,12 @@ class slds_ctrl : public slds, public lds_ctrl_adam{
 	adam::data_t y;
 
 //:slds()
-	slds_ctrl() 
+	slds_ctrl() : slds(), lds_ctrl_adam()
 	{
 		initSys();
 	}
-								void switchSys(int);
+								
+	void switchSys(int);
 	//void resetSys();
 	void initSys();
 	//void calcU(adam::data_t, adam::data_t);

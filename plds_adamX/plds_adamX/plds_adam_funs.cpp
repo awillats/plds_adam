@@ -152,6 +152,7 @@ void slds::initSys()
     allSys.push_back(glds_adam());
     allSys.push_back(glds_adam());
     allSys[1].B = allSys[0].B*switchScale; //hardcoded default
+	allSys.push_back(glds_adam());
     std::cout<<"\n DEBUG: END SLDS PRINTING\n";
 
    sysPtr = allSys.begin();
@@ -161,6 +162,7 @@ void slds::initSys()
 
 void slds::switchSys(int sys_idx_new)
 {
+	std::cout<<"|base switch called|"<<allSys.size();
 	if (sys_idx_new!=sys_idx) 
 	{
 		if ( ((sys_idx_new+1) > allSys.size()) || (sys_idx_new<0) )
