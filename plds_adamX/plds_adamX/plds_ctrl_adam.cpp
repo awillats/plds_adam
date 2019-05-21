@@ -51,7 +51,7 @@ void lds_ctrl_adam::importProps(lds_ctrl_adam sysIn)
 	nX = sysIn.nX;
 	K = sysIn.K;
 	nbar = sysIn.nbar;
-	std::cout<<"\nctrl import called";
+	//std::cout<<"\nctrl import called";
 }
 
 void lds_ctrl_adam::importSignals(lds_ctrl_adam sysIn)
@@ -68,7 +68,7 @@ void slds_ctrl::initSys()
 {
     allSys.push_back(lds_ctrl_adam());
     allSys.push_back(lds_ctrl_adam());
-    allSys[1].K = allSys[0].K/2;//verify this is what we want
+    allSys[1].K = allSys[0].K/switchScale;//verify this is what we want
 
     sysPtr = allSys.begin();
     sys_idx=0;
@@ -77,18 +77,43 @@ void slds_ctrl::initSys()
 }
 
 
+//unfortunately this is copy-pasted from slds::switchSys. there has to be a more elegant way to accomplish this
+void slds_ctrl::switchSys_inner(int sys_idx_new)
+{
+	  //std::cout<<"|inner switch called|"<<allSys.size();
+	if (sys_idx_new!=sys_idx) 
+	{
+		if ( ((sys_idx_new+1) > allSys.size()) || (sys_idx_new<0) )
+		{
+			std::cout<<"\n\n idx violation: "<<sys_idx_new;
+			return;
+		}
+		else
+		{
+			std::cout<<"\n valid idx: "<<sys_idx_new;
+
+			sysPtr = std::next(allSys.begin(), sys_idx_new); //point to new sys
+			//slds_ctrl::importProps(*sysPtr); //switch A,B,C,D
+
+			sys_idx = sys_idx_new; //update 
+		} // end if-else
+
+	}//endif
+}
+
+
+
 void slds_ctrl::switchSys(int switch_idx)
 {
-	std::cout<<"|ctrl switch called|";
-	std::cout<<"$a"<<(*sysPtr).K;
+	  //std::cout<<"|ctrl switch called|";//debug outptus
+	  //std::cout<<"$a"<<(*sysPtr).K;//debug outputs
 
-	this->slds::switchSys(switch_idx);
-	std::cout<<"$b"<<(*sysPtr).K;
+	switchSys_inner(switch_idx);
+	//slds::switchSys(switch_idx); //other way of switchSys code reuse
 
-	std::cout<<"\n new import incoming:";
+	//std::cout<<"$b"<<(*sysPtr).K; //debug outputs
+	//std::cout<<"\n new import incoming:"; //debug outputs
 	lds_ctrl_adam::importProps(*sysPtr);
-	
-	std::cout<<"$c"<<(*sysPtr).K;
 }
 
 /*

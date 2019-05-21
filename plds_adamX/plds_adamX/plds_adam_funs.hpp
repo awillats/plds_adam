@@ -143,8 +143,6 @@ class slds : public lds_adam{
 
 }; 
 
-
-
 /*
 class slds_tensor : public lds_adam{
     private:

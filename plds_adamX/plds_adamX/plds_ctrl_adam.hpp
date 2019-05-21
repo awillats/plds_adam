@@ -54,10 +54,13 @@ class lds_ctrl_adam {
 
 ///////////////////////////////////////////////
 
+//this isn't working how i intend it at the moment. i want to reuse more of the methods inside the base slds class, but on the extended classes... 
 
 class slds_ctrl : public slds, public lds_ctrl_adam{
+    private:
+	void switchSys_inner(int);    
     public:
-	//only need to override init methods!
+	//only need to override init methods!?
 	
 	std::vector<lds_ctrl_adam> allSys;
 	std::vector<lds_ctrl_adam>::iterator sysPtr;
@@ -67,12 +70,12 @@ class slds_ctrl : public slds, public lds_ctrl_adam{
 	adam::data_t y;
 
 //:slds()
-	slds_ctrl() : slds(), lds_ctrl_adam()
+	slds_ctrl() : slds(),lds_ctrl_adam()
 	{
 		initSys();
 	}
 								
-	void switchSys(int);
+	void switchSys(int);//overrides slds
 	//void resetSys();
 	void initSys();
 	//void calcU(adam::data_t, adam::data_t);
