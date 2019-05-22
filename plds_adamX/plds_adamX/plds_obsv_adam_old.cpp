@@ -6,7 +6,7 @@
 //  Copyright © 2019 Adam Willats. All rights reserved.
 //
 
-#include "plds_obsv_adam.hpp"
+#include "plds_obsv_adam_old.hpp"
 
 using namespace adam;
 
@@ -62,27 +62,12 @@ void glds_obsv::predict(data_t u_in, data_t ymeas)
 //PREDICTION STEP
    // a priori error covariance
 	P = A*P*A.t() + Q;
-//shouldn't be necessary
-	/*
-	if (arma::norm(P)>1)
-	{
-		std::cout<<"danger";
-		//sP = Q;
-		loadParams();
-	}
-	if (arma::norm(P)<1e-10)
-	{
-		std::cout<<",";//P,silent";
-		loadParams();
-		//P=Q;
-	}
-	*/
+
 //UPDATE STEP
    //innovation covariance
 	Mat S = R + C*P*C.t(); 
    //optimal gain
 	K = P*C.t()*S.i();
-	//K.fill(1);//override
    // a posteriori updates
 	x = A*x + B*u + (K*(ymeas - y))*isUpdating;
 
@@ -92,6 +77,12 @@ void glds_obsv::predict(data_t u_in, data_t ymeas)
 	y = arma::as_scalar(C*x);
 }
 
+void glds_obsv::resetSys()
+{
+	std::cout<<"reseting KF";
+	lds_adam::resetSys();
+	loadParams();
+}
 void glds_obsv::printParams()
 {
 	glds_adam::printSys();
@@ -135,9 +126,7 @@ void s_glds_obsv::initSys()
 
 void s_glds_obsv::resetSys()
 {
-	(*sysPtr).glds_obsv::resetSys();
-	x = (*sysPtr).x;
-	y= (*sysPtr).y;
+	glds_obsv::resetSys();
 }
 
 
@@ -148,38 +137,3 @@ void s_glds_obsv::predict(data_t u_in, data_t ymeas)
 	y= (*sysPtr).y;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

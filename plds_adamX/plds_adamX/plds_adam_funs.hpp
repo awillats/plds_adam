@@ -104,7 +104,7 @@ class glds_adam : public lds_adam{
 	adam::Mat Q;
 	adam::Mat R;
 
-         glds_adam(): lds_adam(), qmag(0e-4), rmag(0e-4)
+         glds_adam(): lds_adam(), qmag(1e-1), rmag(1e-2)
 	{
 	    initSys();
 	};

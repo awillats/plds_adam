@@ -51,13 +51,17 @@ class glds_obsv : public glds_adam{
 
 	int isUpdating;
 
-	glds_obsv() : glds_adam(), pmag(1e-4)
+	glds_obsv() : glds_adam(), pmag(1e-3)
 	{
 		loadParams();
 		printParams();	
 	}
 
+
+
 	void loadParams();
+	void resetSys();
+
 	void predict(adam::data_t, adam::data_t);
 	void update();
 	void printParams();
@@ -92,3 +96,4 @@ class s_glds_obsv : public slds, public glds_obsv{
 
 
 #endif
+
