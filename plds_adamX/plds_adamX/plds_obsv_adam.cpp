@@ -91,15 +91,24 @@ void glds_obsv::predict(data_t u_in, data_t ymeas)
 
 	y = arma::as_scalar(C*x);
 }
-
+void glds_obsv::resetSys()
+{
+	lds_adam::resetSys();
+	loadParams();
+	
+	//P.fill(0);
+	std::cout<<"zerod P,"<<pmag;
+}
 void glds_obsv::printParams()
 {
 	glds_adam::printSys();
+	std::cout<<"\nKF print ended,new\n";
 }
 
 void glds_obsv::toggleUpdating()
 {
 	isUpdating = ((isUpdating==1) ? 0 : 1);
+	std::cout<<"KF toggle_new";
 }
 
 void glds_obsv::importProps(glds_obsv sysIn)

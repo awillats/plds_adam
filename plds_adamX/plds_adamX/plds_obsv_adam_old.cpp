@@ -91,6 +91,7 @@ void glds_obsv::printParams()
 void glds_obsv::toggleUpdating()
 {
 	isUpdating = ((isUpdating==1) ? 0 : 1);
+	std::cout<<"KF toggle_old";
 }
 
 void glds_obsv::importProps(glds_obsv sysIn)
