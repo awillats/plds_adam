@@ -137,7 +137,7 @@ void glds_adam::importProps(glds_adam sysIn)
 	D = sysIn.D;
 	Q = sysIn.Q;
 	R = sysIn.R;
-	std::cout<<"glds import called";
+	std::cout<<" glds import_called, B:"<<std::endl<<B;
 }
 
 

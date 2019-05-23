@@ -132,7 +132,7 @@ class slds : public glds_adam{
 	int sys_idx;
 	double switchScale;
 
-	slds(): glds_adam(), switchScale(1.4)
+	slds(): glds_adam(), switchScale(2)
 	{
 		initSys();
 	};
