@@ -163,6 +163,7 @@ void s_glds_obsv::switchSys_inner(int sys_idx_new)
 
 			sys_idx = sys_idx_new; //update 
 		} // end if-else
+		//for debug//std::cout<<"\n\n switch obsv, B:\n"<<(*sysPtr).B;
 
 	}//endif
 }
@@ -171,6 +172,7 @@ void s_glds_obsv::switchSys(int sys_idx_new)
 {
 	switchSys_inner(sys_idx_new);
 	glds_obsv::importProps(*sysPtr);
+	
 }
 
 
