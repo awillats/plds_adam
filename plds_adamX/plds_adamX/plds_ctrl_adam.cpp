@@ -90,7 +90,7 @@ void slds_ctrl::switchSys_inner(int sys_idx_new)
 		}
 		else
 		{
-			std::cout<<"\n valid idx: "<<sys_idx_new;
+			std::cout<<"\nctrl,valid idx: "<<sys_idx_new;
 
 			sysPtr = std::next(allSys.begin(), sys_idx_new); //point to new sys
 			//slds_ctrl::importProps(*sysPtr); //switch A,B,C,D

@@ -106,6 +106,8 @@ void glds_adam::initSys()
 {
 	lds_adam::initSys();
  		//to do: load these from file
+	x.set_size(nX);//excessive?
+	x.fill(0);
 	Q = qmag*Mat(nX,nX,arma::fill::eye);
 	R = rmag;
 }
@@ -151,6 +153,8 @@ void slds::initSys()
 
 
    glds_adam sys0 = glds_adam();
+	sys0.x.set_size(nX);//cut?
+	sys0.x.fill(0);
    glds_adam sys1 = sys0;
    sys1.B = sys0.B*switchScale;
 
@@ -177,7 +181,7 @@ void slds::switchSys(int sys_idx_new)
 		}
 		else
 		{
-			std::cout<<"\n valid idx: "<<sys_idx_new;
+			std::cout<<"\n sys,valid idx: "<<sys_idx_new;
 
 			sysPtr = std::next(allSys.begin(), sys_idx_new); //point to new sys
 			importProps(*sysPtr); //switch A,B,C,D

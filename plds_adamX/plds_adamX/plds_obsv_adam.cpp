@@ -123,6 +123,12 @@ void glds_obsv::importProps(glds_obsv sysIn)
 	P = sysIn.P;
 }
 
+void glds_obsv::importSignals(glds_obsv sysIn)
+{
+	x=sysIn.x;
+	y=sysIn.y;
+}
+
 
 ////////////////////////////////////////////////////
 
@@ -131,15 +137,27 @@ void s_glds_obsv::initSys()
 {
    std::cout<<"\n DEBUG: SKF PRINTING\n";
 
-    allSys.push_back(glds_obsv());
-    allSys.push_back(glds_obsv());
-    allSys[1].B = allSys[0].B*switchScale; //hardcoded default
+
+   glds_obsv obsv0 = glds_obsv();
+	//obsv0.x.set_size(glds_adam::nX);
+	//obsv0.x.fill(0);
+   glds_obsv obsv1 = obsv0;
+	obsv1.B = obsv0.B*switchScale;
+
+    allSys.push_back(obsv0);
+    allSys.push_back(obsv1);
+    //allSys[1].B = allSys[0].B*switchScale; //hardcoded default
     std::cout<<"\n DEBUG: END SKF PRINTING\n";
 
    sysPtr = allSys.begin();
    sys_idx=0;
 
    glds_obsv::importProps(*sysPtr);
+   glds_obsv::importSignals(*sysPtr);
+  
+   x.set_size(obsv0.nX);//has to be more elegant way to do this...
+   x.fill(0);//
+   y=arma::as_scalar(obsv0.C*x);
 }
 
 
@@ -156,7 +174,7 @@ void s_glds_obsv::switchSys_inner(int sys_idx_new)
 		}
 		else
 		{
-			std::cout<<"\n valid idx: "<<sys_idx_new;
+			std::cout<<"\n obsv,valid idx: "<<sys_idx_new;
 
 			sysPtr = std::next(allSys.begin(), sys_idx_new); //point to new sys
 			//slds_ctrl::importProps(*sysPtr); //switch A,B,C,D
@@ -170,8 +188,12 @@ void s_glds_obsv::switchSys_inner(int sys_idx_new)
 
 void s_glds_obsv::switchSys(int sys_idx_new)
 {
+	//should be done more elegantly...
 	switchSys_inner(sys_idx_new);
 	glds_obsv::importProps(*sysPtr);
+//toggle these two lines of code to reintroduce switching transients???
+	(*sysPtr).x=x;
+	(*sysPtr).y=y;
 	
 }
 

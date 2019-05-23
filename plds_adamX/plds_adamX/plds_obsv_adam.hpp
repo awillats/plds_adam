@@ -64,7 +64,9 @@ class glds_obsv : public glds_adam{
 	void update();
 	void printParams();
 	void toggleUpdating();
+
 	void importProps(glds_obsv sysIn);
+	void importSignals(glds_obsv sysIn);
 };
 
 
