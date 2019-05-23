@@ -139,8 +139,6 @@ class slds : public glds_adam{
 
 	void initSys();
 	void switchSys(int);
-
-
 }; 
 
 /*

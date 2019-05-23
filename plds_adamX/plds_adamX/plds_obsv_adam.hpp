@@ -69,6 +69,8 @@ class glds_obsv : public glds_adam{
 
 
 class s_glds_obsv : public slds, public glds_obsv{
+    private:
+	void switchSys_inner(int);	
     public:
 	//only need to override init methods!
 	
@@ -87,7 +89,8 @@ class s_glds_obsv : public slds, public glds_obsv{
 	void resetSys();
 	void initSys();
 	void predict(adam::data_t, adam::data_t);
-	//void switchSys(int);
+
+	void switchSys(int);
 
 };
 
