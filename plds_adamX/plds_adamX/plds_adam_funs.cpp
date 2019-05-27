@@ -143,10 +143,12 @@ void glds_adam::importProps(glds_adam sysIn)
 }
 ///////////////////////////////////////////////////////////////////////////////////////PLDS_ADAM
 
-	void calcNL();
-	void spike();
-	void stepPlant(adam::data_t);
 
+void plds_adam::setDt(data_t dt_in)
+{
+	dt=dt_in;
+	std::cout<<"dt set to "<<dt;
+}
 void plds_adam::initSys()
 {
 	lds_adam::initSys();
@@ -154,6 +156,12 @@ void plds_adam::initSys()
 	x.set_size(nX);//excessive?
 	x.fill(0);
 	Q = qmag*Mat(nX,nX,arma::fill::eye);
+}
+
+void plds_adam::printSys()
+{
+	lds_adam::printSys();
+	std::cout<<"y_nl = exp(Cx+nl_d)";//filler
 }
 
 
@@ -164,10 +172,12 @@ void plds_adam::calcNL()
 }
 void plds_adam::spike()
 {
-	std::default_random_engine gen;//might be able to make this private?
-	std::poisson_distribution<data_t> pDistr(y_nl);
-	//std::bernoulli_distribution<data_t> pDistr(y_nl);
-	z = pDistr(gen);
+	std::random_device r;
+	std::default_random_engine gen(r());//might be able to make this private?
+	std::poisson_distribution<int> pDistr(y_nl);
+	//std::bernoulli_distribution<int> pDistr(y_nl);
+	z = (data_t)pDistr(gen); //generate sample, cast int to double
+	//std::cout<<"p:"<<y_nl<<">"<<z<<"\n";//debug only
 }
 void plds_adam::stepPlant(data_t newU)
 {
@@ -186,7 +196,6 @@ void plds_adam::importProps(plds_adam sysIn)
 	C = sysIn.C;
 	D = sysIn.D;
 	Q = sysIn.Q;
-	R = sysIn.R;
 
 	nl_d = sysIn.nl_d;//replace with more general sys params
 

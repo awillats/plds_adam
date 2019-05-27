@@ -114,7 +114,7 @@ class glds_adam : public lds_adam{
 	};
 	void initSys();
 	void printSys();
-	void stepPlant(adam::data_);
+	void stepPlant(adam::data_t);
 	void importProps(glds_adam);
 
 }; //end of glds
@@ -123,21 +123,29 @@ class glds_adam : public lds_adam{
 ////////////////////////////////////////////////////////////////////////////// PLDS CLASSDEF
 class plds_adam: public lds_adam{
     private:
+	adam::data_t dt;
     public:
 
 	//A,B,C,D
 	adam::data_t qmag;
+	adam::Mat Q;
 
 	adam::data_t nl_d;//yNL = exp(Cx+nl_d);
 
 	adam::data_t y_nl;
 	adam::data_t z;//should be an integer?
 
-	plds_adam(adam::data_t dt_in): lds_adam(), qmag(1e-2), nl_d(-1)
+	plds_adam(): lds_adam(), qmag(1e-2), nl_d(2)//10 is too big?-1 too small
 	{
-		dt = dt_in; //ehh
+//adam::data_t dt_in
+		dt = 1e-3;//dt_in; //ehh
 		initSys();
 	}
+	void setDt(adam::data_t);
+
+	void initSys();
+	void printSys();
+
 	void calcNL();
 	void spike();
 	void stepPlant(adam::data_t);
