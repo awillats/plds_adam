@@ -89,6 +89,8 @@ class lds_adam{
 };
 
 
+//To-do: Specify observation classes? like gaussian, poisson, have GLDS inherit
+
 ////////////////////////////////////////////////////////////////////////////// GLDS CLASSDEF
 
 
@@ -98,7 +100,7 @@ class glds_adam : public lds_adam{
     	//std::mt19937 gen; 
 
     public:
-
+	//A,B,C,D
 	double qmag;
 	double rmag;
 	adam::Mat Q;
@@ -110,11 +112,32 @@ class glds_adam : public lds_adam{
 	};
 	void initSys();
 	void printSys();
-	void stepPlant(double);
+	void stepPlant(adam::data_);
 	void importProps(glds_adam);
 
 }; //end of glds
 
+
+////////////////////////////////////////////////////////////////////////////// PLDS CLASSDEF
+class plds_adam: public lds_adam{
+    private:
+    public:
+
+	adam::data_t nl_d;//yNL = exp(Cx+nl_d);
+
+	adam::data_t y_nl;
+	adam::data_t z;//should be an integer?
+
+	plds_adam(): lds_adam(), nl_d(-1)
+	{
+		initSys();
+	}
+	void calcNL();
+	void spike();
+	void stepPlant(adam::data_t);
+	void importProps(plds_adam);
+
+}; //end of plds
 
 ////////////////////////////////////////////////////////////////////////////// SLDS CLASSDEF
 

@@ -120,7 +120,7 @@ void glds_adam::printSys()
 }
 
 
-void glds_adam::stepPlant(double newU)
+void glds_adam::stepPlant(data_t newU)
 {	
 
     Vec w = Q*arma::vec(nX, arma::fill::randn);//should be sqrt(Q)
@@ -141,8 +141,47 @@ void glds_adam::importProps(glds_adam sysIn)
 	R = sysIn.R;
 	std::cout<<" glds import_called, B:"<<std::endl<<B;
 }
+///////////////////////////////////////////////////////////////////////////////////////PLDS_ADAM
 
+	void calcNL();
+	void spike();
+	void stepPlant(adam::data_t);
 
+void plds_adam::calcNL()
+{
+	//would like to generalize this later. i.e. log(1+exp(x)))
+	y_nl = exp(y + nl_d);
+}
+void plds_adam::spike()
+{
+	std::default_random_engine gen;//might be able to make this private?
+	std::poisson_distribution<data_t> pDistr(y_nl);
+
+	z = pDistr(gen);
+}
+void plds_adam::stepPlant(data_t newU)
+{
+	u = newU;
+        Vec w = Q*arma::vec(nX, arma::fill::randn);//should be sqrt(Q)
+
+    	x = arma::vectorise(    A*x + B*u  + w  ); //+noise
+    	y = arma::as_scalar(    C*x + D*u  );
+	calcNL(); //updates y_NL
+	spike(); //updates z_spk
+}
+void plds_adam::importProps(plds_adam sysIn)
+{
+	A = sysIn.A;
+	B = sysIn.B;
+	C = sysIn.C;
+	D = sysIn.D;
+	Q = sysIn.Q;
+	R = sysIn.R;
+
+	nl_d = sysIn.nl_d;//replace with more general sys params
+
+	std::cout<<" plds import_called, B:"<<std::endl<<B;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////SLDS_ADAM
 
