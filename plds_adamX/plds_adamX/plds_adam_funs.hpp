@@ -135,7 +135,7 @@ class plds_adam: public lds_adam{
 	adam::data_t y_nl;
 	adam::data_t z;//should be an integer?
 
-	plds_adam(): lds_adam(), qmag(1e-2), nl_d(2)//10 is too big?-1 too small
+	plds_adam(): lds_adam(), qmag(1e-2), nl_d(2)//10 is too big?-1 too small, 2 slightly too big
 	{
 //adam::data_t dt_in
 		dt = 1e-3;//dt_in; //ehh
