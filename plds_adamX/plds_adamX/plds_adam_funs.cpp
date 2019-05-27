@@ -147,16 +147,26 @@ void glds_adam::importProps(glds_adam sysIn)
 	void spike();
 	void stepPlant(adam::data_t);
 
+void plds_adam::initSys()
+{
+	lds_adam::initSys();
+	//to do: load these V from file
+	x.set_size(nX);//excessive?
+	x.fill(0);
+	Q = qmag*Mat(nX,nX,arma::fill::eye);
+}
+
+
 void plds_adam::calcNL()
 {
 	//would like to generalize this later. i.e. log(1+exp(x)))
-	y_nl = exp(y + nl_d);
+	y_nl = exp(y + nl_d)*dt;// double check this convention
 }
 void plds_adam::spike()
 {
 	std::default_random_engine gen;//might be able to make this private?
 	std::poisson_distribution<data_t> pDistr(y_nl);
-
+	//std::bernoulli_distribution<data_t> pDistr(y_nl);
 	z = pDistr(gen);
 }
 void plds_adam::stepPlant(data_t newU)

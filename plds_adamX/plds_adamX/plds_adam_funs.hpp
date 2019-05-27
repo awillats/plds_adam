@@ -18,6 +18,8 @@
 
 #include <random>
 
+#include <math.h> //exp
+
 
 //from module_help
 #include <eigen/Eigen/Dense>
@@ -123,13 +125,17 @@ class plds_adam: public lds_adam{
     private:
     public:
 
+	//A,B,C,D
+	adam::data_t qmag;
+
 	adam::data_t nl_d;//yNL = exp(Cx+nl_d);
 
 	adam::data_t y_nl;
 	adam::data_t z;//should be an integer?
 
-	plds_adam(): lds_adam(), nl_d(-1)
+	plds_adam(adam::data_t dt_in): lds_adam(), qmag(1e-2), nl_d(-1)
 	{
+		dt = dt_in; //ehh
 		initSys();
 	}
 	void calcNL();
