@@ -200,7 +200,7 @@ class splds : public plds_adam{
 	int sys_idx;
 	double switchScale;
 
-	slds(): plds_adam(), switchScale(2)
+	splds(): plds_adam(), switchScale(2)
 	{
 		initSys();
 	};
