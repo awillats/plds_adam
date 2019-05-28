@@ -96,7 +96,7 @@ class plds_obsv : public plds_adam{
 	void importProps(plds_obsv sysIn);
 	void importSignals(plds_obsv sysIn);
 	
-}
+};
 
 class s_glds_obsv : public slds, public glds_obsv{
     private:

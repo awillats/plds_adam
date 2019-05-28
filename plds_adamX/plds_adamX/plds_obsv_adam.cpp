@@ -142,13 +142,13 @@ void plds_obsv::loadParams()
 	isUpdating = 1;
 }
 
-void plds_obsv::predict(data_t u_in, data_t ymeas)
+void plds_obsv::predict(data_t u_in, data_t spike_meas)
 {
 	u=u_in;
 	calcNL();//update y_nl
-
-	P = (P.i() + C.t()*y*C).i();//posterior covariance
-	x = A*x + B*u - P*C.t() * (ymeas-y_nl)*isUpdating; //posterior mean
+//replace inv with inv_sympd
+	P = arma::inv(P.i() + C.t()*y*C);//posterior covariance
+	x = A*x + B*u - P*C.t() * (spike_meas-y_nl)*isUpdating; //posterior mean
 	y = arma::as_scalar(  C*x  );
 
 	calcNL();
@@ -164,7 +164,7 @@ void plds_obsv::resetSys()
 }
 void plds_obsv::printParams()
 {
-	glds_adam::printSys();
+	plds_adam::printSys();
 	std::cout<<"\nPPF print ended,new\n";
 }
 
