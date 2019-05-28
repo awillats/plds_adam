@@ -124,6 +124,33 @@ class s_glds_obsv : public slds, public glds_obsv{
 
 };
 
+//yes, definitely lots of code shared with s_glds_obsv, must be a more efficient way to write these
+
+class s_plds_obsv : public slds, public plds_obsv{
+    private:
+	void switchSys_inner(int);	
+    public:
+	//only need to override init methods!
+	
+	std::vector<plds_obsv> allSys;
+	std::vector<plds_obsv>::iterator sysPtr;
+	//int sys_idx;
+
+	adam::Vec x;
+	adam::data_t y;
+	adam::data_t y_nl;
+	adam::data_t z;
+
+//:slds()
+	s_glds_obsv() 
+	{
+		initSys();
+	}
+	void resetSys();
+	void initSys();
+	void predict(adam::data_t, adam::data_t);
+	void switchSys(int);
+};
 
 
 #endif

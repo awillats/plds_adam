@@ -291,6 +291,103 @@ void s_glds_obsv::predict(data_t u_in, data_t ymeas)
 
 
 
+////////////////////////////////////////////////////    Switch PoissonLDS
+
+
+void s_plds_obsv::initSys()
+{
+   std::cout<<"\n DEBUG: SKF PRINTING\n";
+
+
+   plds_obsv obsv0 = plds_obsv();
+   plds_obsv obsv1 = obsv0;
+	obsv1.B = obsv0.B*switchScale;
+
+    allSys.push_back(obsv0);
+    allSys.push_back(obsv1);
+    //allSys[1].B = allSys[0].B*switchScale; //hardcoded default
+    std::cout<<"\n DEBUG: END SKF PRINTING\n";
+
+   sysPtr = allSys.begin();
+   sys_idx=0;
+
+   plds_obsv::importProps(*sysPtr);
+   plds_obsv::importSignals(*sysPtr);
+  
+   x.set_size(obsv0.nX);//has to be more elegant way to do this...
+   x.fill(0);//
+   y=arma::as_scalar(obsv0.C*x);
+}
+
+
+//unfortunately this is copy-pasted from slds::switchSys. there has to be a more elegant way to accomplish this
+void s_plds_obsv::switchSys_inner(int sys_idx_new)
+{
+	  //std::cout<<"|inner switch called|"<<allSys.size();
+	if (sys_idx_new!=sys_idx) 
+	{
+		if ( ((sys_idx_new+1) > allSys.size()) || (sys_idx_new<0) )
+		{
+			std::cout<<"\n\n idx violation: "<<sys_idx_new;
+			return;
+		}
+		else
+		{
+			std::cout<<"\n obsv,valid idx: "<<sys_idx_new;
+
+			sysPtr = std::next(allSys.begin(), sys_idx_new); //point to new sys
+			//slds_ctrl::importProps(*sysPtr); //switch A,B,C,D
+
+			sys_idx = sys_idx_new; //update 
+		} // end if-else
+		
+
+	}//endif
+}
+
+void s_plds_obsv::switchSys(int sys_idx_new)
+{
+	//should be done more elegantly...
+	switchSys_inner(sys_idx_new);
+	plds_obsv::importProps(*sysPtr);
+//toggle these two lines of code to reintroduce switching transients???
+	(*sysPtr).x=x;
+	(*sysPtr).y=y;
+	(*sysPtr).y_nl = y_nl;
+	(*sysPtr).z = z;
+	
+}
+
+
+void s_plds_obsv::resetSys()
+{
+	(*sysPtr).plds_obsv::resetSys();
+	plds_obsv::importSignals();//verify that this is sufficient
+/*
+	x = (*sysPtr).x;
+	y= (*sysPtr).y;
+	y_nl = (*sysPtr).y_nl;
+	z = (*sysPtr).z;
+*/
+}
+
+void s_plds_obsv::predict(data_t u_in, data_t spike_meas)
+{
+//Note this method of gating observations is inefficient and code be handled more elegantly.
+//more direct class inheritance of the "isUpdating" tag is what's needed here
+	
+	if (isUpdating) { (*sysPtr).predict(u_in,spike_meas); }
+	else { (*sysPtr).lds_adam::stepPlant(u_in); }
+//also note that this bypasses any updates in the kalman filter algo. so P stays constant
+	
+	plds_obsv::importSignals();
+/*
+	x = (*sysPtr).x;
+	y= (*sysPtr).y;
+	y_nl = (*sysPtr).y_nl;
+	z = (*sysPtr).z;
+*/
+}
 
 
 
