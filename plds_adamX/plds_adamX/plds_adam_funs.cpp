@@ -161,7 +161,7 @@ void plds_adam::initSys()
 void plds_adam::printSys()
 {
 	lds_adam::printSys();
-	std::cout<<"y_nl = exp(Cx+nl_d)";//filler
+	std::cout<<"y_nl = exp(Cx+nl_d), nl_d:"<<nl_d<<", dt:"<<dt<<"\n";//filler
 }
 
 

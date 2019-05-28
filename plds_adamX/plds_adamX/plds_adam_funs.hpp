@@ -123,9 +123,9 @@ class glds_adam : public lds_adam{
 ////////////////////////////////////////////////////////////////////////////// PLDS CLASSDEF
 class plds_adam: public lds_adam{
     private:
-	adam::data_t dt;
+	
     public:
-
+adam::data_t dt;//should be private later
 	//A,B,C,D
 	adam::data_t qmag;
 	adam::Mat Q;
