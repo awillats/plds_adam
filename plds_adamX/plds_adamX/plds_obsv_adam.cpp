@@ -84,7 +84,7 @@ void glds_obsv::predict(data_t u_in, data_t ymeas)
 	K = P*C.t()*S.i();
 	//K.fill(1);//override
    // a posteriori updates
-	x = A*x + B*u + (K*(ymeas - y))*isUpdating;
+	x = A*x + B*u - (K*(y-ymeas))*isUpdating;
 
    // a post. covar
 	P = (I-K*C) * P;
