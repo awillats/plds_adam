@@ -44,7 +44,8 @@ void lds_obsv::printParams()
 }
 
 
-///////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////   GLDS
 
 
 void glds_obsv::loadParams()
@@ -113,6 +114,7 @@ void glds_obsv::toggleUpdating()
 
 void glds_obsv::importProps(glds_obsv sysIn)
 {
+	//glds_adam::importProps()
 	A = sysIn.A;
 	B = sysIn.B;
 	C = sysIn.C;
@@ -130,7 +132,73 @@ void glds_obsv::importSignals(glds_obsv sysIn)
 }
 
 
-////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////   PLDS
+
+
+void plds_obsv::loadParams()
+{
+	//lds_obsv::loadObsvParams();
+	P = pmag*arma::eye<Mat>(nX,nX);
+	isUpdating = 1;
+}
+
+void plds_obsv::predict(data_t u_in, data_t ymeas)
+{
+	u=u_in;
+	calcNL();//update y_nl
+
+	P = (P.i() + C.t()*y*C).i();//posterior covariance
+	x = A*x + B*u - P*C.t() * (ymeas-y_nl)*isUpdating; //posterior mean
+	y = arma::as_scalar(  C*x  );
+
+	calcNL();
+	spike();
+}
+void plds_obsv::resetSys()
+{
+	lds_adam::resetSys();
+	loadParams();
+	
+	//P.fill(0);
+	std::cout<<"zerod P,"<<pmag;
+}
+void plds_obsv::printParams()
+{
+	glds_adam::printSys();
+	std::cout<<"\nPPF print ended,new\n";
+}
+
+void plds_obsv::toggleUpdating()
+{
+	isUpdating = ((isUpdating==1) ? 0 : 1);
+	std::cout<<"PPF toggle_newx";
+}
+
+void plds_obsv::importProps(plds_obsv sysIn)
+{
+	A = sysIn.A;
+	B = sysIn.B;
+	C = sysIn.C;
+	D = sysIn.D;
+	Q = sysIn.Q;
+	nl_d = sysIn.nl_d;
+
+	//R = sysIn.R;
+
+	P = sysIn.P;
+}
+
+void plds_obsv::importSignals(plds_obsv sysIn)
+{
+	x=sysIn.x;
+	y=sysIn.y;
+	y_nl = sysIn.y_nl;
+	z = sysIn.z;
+}
+
+
+
+////////////////////////////////////////////////////    Switch GLDS
 
 
 void s_glds_obsv::initSys()

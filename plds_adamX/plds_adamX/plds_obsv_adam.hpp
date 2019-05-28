@@ -68,7 +68,35 @@ class glds_obsv : public glds_adam{
 	void importProps(glds_obsv sysIn);
 	void importSignals(glds_obsv sysIn);
 };
+//should be able to do a better job of sharing code between glds_obsv and plds_obsv
+class plds_obsv : public plds_adam{
+    private:
+	adam::data_t pmag;
+    public:
+	adam::data_t ymeas;
+	adam::Vec K;
+	adam::Mat P; //covar of estimate
 
+	int isUpdating;
+
+	plds_obsv() : plds_adam(), pmag(2)
+	{
+		loadParams();
+		printParams();	
+	}
+
+	void resetSys();
+
+	void loadParams();
+	void predict(adam::data_t, adam::data_t);
+	void update();
+	void printParams();
+	void toggleUpdating();
+
+	void importProps(plds_obsv sysIn);
+	void importSignals(plds_obsv sysIn);
+	
+}
 
 class s_glds_obsv : public slds, public glds_obsv{
     private:
