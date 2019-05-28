@@ -251,10 +251,51 @@ void slds::switchSys(int sys_idx_new)
 }
 
 
+///////////////////////////////////////////////////////////////////////////////////////SPLDS_ADAM
 
 
+void splds::initSys()
+{
+   std::cout<<"\n DEBUG: S_PLDS PRINTING\n";
 
 
+   plds_adam sys0 = plds_adam();
+	sys0.x.set_size(nX);//cut?
+	sys0.x.fill(0);
+   plds_adam sys1 = sys0;
+   sys1.B = sys0.B*switchScale;
+
+    allSys.push_back(sys0);
+    allSys.push_back(sys1);
+    std::cout<<"\n DEBUG: END S PLDS PRINTING\n";
+
+   sysPtr = allSys.begin();
+   sys_idx=0;
+}
+
+
+void splds::switchSys(int sys_idx_new)
+{
+	 // std::cout<<"|base switch called|"<<allSys.size();
+	if (sys_idx_new!=sys_idx) 
+	{
+		if ( ((sys_idx_new+1) > allSys.size()) || (sys_idx_new<0) )
+		{
+			std::cout<<"\n\n idx violation: "<<sys_idx_new;
+			return;
+		}
+		else
+		{
+			std::cout<<"\n sys,valid idx: "<<sys_idx_new;
+
+			sysPtr = std::next(allSys.begin(), sys_idx_new); //point to new sys
+			importProps(*sysPtr); //switch A,B,C,D
+
+			sys_idx = sys_idx_new; //update 
+		} // end if-else
+
+	}//endif
+}
 
 
 

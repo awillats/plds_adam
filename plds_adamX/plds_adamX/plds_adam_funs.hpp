@@ -186,6 +186,31 @@ class slds_tensor : public lds_adam{
 	void switchPlant();
 }
 */
+
+
+class splds : public plds_adam{
+    private:
+	//void appendSys();
+	//have a family of push/pop options??
+
+    public:
+	
+	std::vector<plds_adam> allSys;
+	std::vector<plds_adam>::iterator sysPtr;
+	int sys_idx;
+	double switchScale;
+
+	slds(): plds_adam(), switchScale(2)
+	{
+		initSys();
+	};
+
+	void initSys();
+	void switchSys(int);
+}; 
+
+
+
 #endif /* lds_adam_funs_hpp */
 
 
