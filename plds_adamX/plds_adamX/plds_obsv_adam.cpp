@@ -333,7 +333,7 @@ void s_plds_obsv::switchSys_inner(int sys_idx_new)
 		}
 		else
 		{
-			std::cout<<"\n obsv,valid idx: "<<sys_idx_new;
+			std::cout<<"\n ppf,valid idx: "<<sys_idx_new;
 
 			sysPtr = std::next(allSys.begin(), sys_idx_new); //point to new sys
 			//slds_ctrl::importProps(*sysPtr); //switch A,B,C,D
@@ -362,13 +362,13 @@ void s_plds_obsv::switchSys(int sys_idx_new)
 void s_plds_obsv::resetSys()
 {
 	(*sysPtr).plds_obsv::resetSys();
-	plds_obsv::importSignals();//verify that this is sufficient
-/*
+	//plds_obsv::importSignals(*sysPtr);//verify that this is sufficient
+
 	x = (*sysPtr).x;
 	y= (*sysPtr).y;
 	y_nl = (*sysPtr).y_nl;
 	z = (*sysPtr).z;
-*/
+
 }
 
 void s_plds_obsv::predict(data_t u_in, data_t spike_meas)
@@ -380,13 +380,12 @@ void s_plds_obsv::predict(data_t u_in, data_t spike_meas)
 	else { (*sysPtr).lds_adam::stepPlant(u_in); }
 //also note that this bypasses any updates in the kalman filter algo. so P stays constant
 	
-	plds_obsv::importSignals();
-/*
+	//plds_obsv::importSignals(*sysPtr);
+
 	x = (*sysPtr).x;
 	y= (*sysPtr).y;
 	y_nl = (*sysPtr).y_nl;
 	z = (*sysPtr).z;
-*/
 }
 
 

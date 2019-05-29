@@ -142,7 +142,7 @@ class s_plds_obsv : public slds, public plds_obsv{
 	adam::data_t z;
 
 //:slds()
-	s_glds_obsv() 
+	s_plds_obsv() 
 	{
 		initSys();
 	}
