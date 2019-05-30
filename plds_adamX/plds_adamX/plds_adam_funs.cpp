@@ -10,6 +10,24 @@
 
 using namespace adam;
 
+/*
+lds_adam aug_lds::augment4PI(lds_adam sysIn)
+{
+	sysIn.augments = aug_lds();
+	return sysIn;
+}
+*/
+
+
+void aug_lds::setAugMap(int nX)
+{
+	augMap.set_size(nX);
+	augMap.fill(AUG_STATE);
+	augMap(nX-1) = AUG_INTY;
+}
+
+//////////////////////////////////////////////
+
 void lds_adam::printSys()
 {
     std::cout <<"Here is the matrix A:\n" << A << "\n";
@@ -96,7 +114,26 @@ void lds_adam::importProps(lds_adam sysIn)
 	D = sysIn.D;
 	std::cout<<"Lds import called";
 }
+//////////////////////////////////////////////////////////////////////////////
 
+void lds_adam::augment4PI()
+{
+
+	augments = aug_lds(++nX);
+	int endi_ = nX-2;
+	int endi = nX-1;
+	std::cout<<"\nAugMap:\n"<<augments.augMap;
+
+	A.resize(nX,nX); A(endi,endi)=1;
+	B.resize(nX, 1); //B(endi,nU) = -1;
+	augments.Br = B;
+	augments.Br.fill(0); augments.Br(endi) = -1;
+	C.resize(1,nX);
+	std::cout<<A;
+
+	//update 
+
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////////////GLDS_ADAM
