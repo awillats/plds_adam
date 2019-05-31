@@ -36,6 +36,12 @@ namespace adam{
 	typedef arma::Mat<data_t> Mat;
 	typedef arma::subview_col<data_t> SubVec;
 	typedef arma::subview<data_t> SubMat;
+
+
+
+	static const int AUG_STATE = 0x1;
+	static const int AUG_INTY = 0x2;
+
 }
 
 namespace adam_e{
@@ -47,6 +53,29 @@ namespace adam_e{
 	//typedef arma::subview_col<data_t> SubVec;
 //	typedef arma::subview<data_t> SubMat;
 }
+
+
+
+///////
+class lds_adam;
+
+class aug_lds{
+    public:
+
+
+	aug_lds(int nX)
+	{
+		setAugMap(nX);	
+		std::cout<<"augmented system!";
+	}
+	aug_lds() { aug_lds(2); }
+	
+	arma::Col<int> augMap;
+	adam::Vec Br;
+
+	void setAugMap(int);
+	//static lds_adam augment4PI(lds_adam);
+};
 
 class lds_adam{
     //vars
@@ -61,9 +90,9 @@ class lds_adam{
 
     
         adam::Mat A; //Eigen::Matrix2d A;
-        adam::Vec B; //Eigen::Vector2d B;
+        adam::Mat B; //Eigen::Vector2d B; //B shoudl be a matrix!!!
         adam::RowVec C; //Eigen::RowVector2d C; 
-        adam::data_t D; 
+        adam::RowVec D; 
     
         adam::Vec x;
         adam::data_t y;
@@ -71,7 +100,12 @@ class lds_adam{
     
         adam::data_t dt;
     
-        lds_adam(): nX(2), nU(1) , nY(1){ initSys();};
+	bool isAug;
+	aug_lds augments;
+
+
+
+        lds_adam(): nX(2), nU(1) , nY(1), isAug(false){ initSys();};
     
         //lds_adam(): nX(2), nU(1) , nY(1){ ;};
 
@@ -83,15 +117,23 @@ class lds_adam{
 
         void stepPlant(double);
 	void stepPlant(adam::Vec, double);  
+	void stepPlant(double, double);//for augmented systems
 	void importProps(lds_adam);
 
         //void randInit();
-    
+	void augment4PI();
+	//friend lds_adam aug_lds::augment4PI(lds_adam);
+        
     private:   
 };
 
 
 //To-do: Specify observation classes? like gaussian, poisson, have GLDS inherit
+
+
+
+
+
 
 ////////////////////////////////////////////////////////////////////////////// GLDS CLASSDEF
 
