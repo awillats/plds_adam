@@ -96,11 +96,31 @@ void lds_adam::initSys()
 
 void lds_adam::stepPlant(double newU)
 {
+   if (isAug)
+   {
+	stepPlant(newU,0);//WARNING, simming augmented system without specifying reference!
+	std::cout<<"err:";// aug sys w/o ref id:19123 ";
+   }
+   else
+   {
+
     u = newU;
     x = arma::vectorise(    A*x + B*u    ); //+noise
     y = arma::as_scalar(    C*x + D*u    );
- 
+
+
+   }
 }
+
+//could instead automate augmented systems to request R?
+void lds_adam::stepPlant(double newU, double newR)
+{ //change this to accept vector input?
+    u=newU;
+    Vec U; U<<newU<<newR;
+    x = arma::vectorise(    A*x + B*U    ); //+noise
+    y = arma::as_scalar(    C*x + D*U    );
+}
+
 void lds_adam::stepPlant(Vec newX, double newU)
 {
     x = newX; //allows overriding x at step, as a solution for switching
@@ -119,17 +139,33 @@ void lds_adam::importProps(lds_adam sysIn)
 void lds_adam::augment4PI()
 {
 
+	isAug=true;
 	augments = aug_lds(++nX);
 	int endi_ = nX-2;
 	int endi = nX-1;
 	std::cout<<"\nAugMap:\n"<<augments.augMap;
 
-	A.resize(nX,nX); A(endi,endi)=1;
-	B.resize(nX, 1); //B(endi,nU) = -1;
-	augments.Br = B;
-	augments.Br.fill(0); augments.Br(endi) = -1;
+	A = join_vert(A,C);//err = {y} - r = {Cx} - r
+	A.resize(nX,nX);
+
+	//this approach stacks r in U~
+
+	nU++;//need to update this in the map
+	B.resize(nX, nU); B(endi,nU-1) = -1;//err = y - {r}
+	//B.resize(nX,nU);	
+
+	augments.Br = Vec(nX,1,arma::fill::zeros);
+	augments.Br(endi)=-1;
+
 	C.resize(1,nX);
 	std::cout<<A;
+
+	D.resize(1,nU);
+
+
+
+	x.resize(nX,1);
+
 
 	//update 
 

@@ -90,9 +90,9 @@ class lds_adam{
 
     
         adam::Mat A; //Eigen::Matrix2d A;
-        adam::Vec B; //Eigen::Vector2d B; //B shoudl be a matrix!!!
+        adam::Mat B; //Eigen::Vector2d B; //B shoudl be a matrix!!!
         adam::RowVec C; //Eigen::RowVector2d C; 
-        adam::data_t D; 
+        adam::RowVec D; 
     
         adam::Vec x;
         adam::data_t y;
@@ -100,11 +100,12 @@ class lds_adam{
     
         adam::data_t dt;
     
+	bool isAug;
 	aug_lds augments;
 
 
 
-        lds_adam(): nX(2), nU(1) , nY(1){ initSys();};
+        lds_adam(): nX(2), nU(1) , nY(1), isAug(false){ initSys();};
     
         //lds_adam(): nX(2), nU(1) , nY(1){ ;};
 
@@ -116,6 +117,7 @@ class lds_adam{
 
         void stepPlant(double);
 	void stepPlant(adam::Vec, double);  
+	void stepPlant(double, double);//for augmented systems
 	void importProps(lds_adam);
 
         //void randInit();
