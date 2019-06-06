@@ -25,7 +25,7 @@
 #include <eigen/Eigen/Dense>
 #include <StAC_rtxi/dataFuns.h>
 
-//#include <dynCtrlEst>
+#include <dynCtrlEst>
 
 
 namespace adam{
