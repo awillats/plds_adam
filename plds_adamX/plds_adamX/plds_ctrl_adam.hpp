@@ -20,7 +20,7 @@
 #include <eigen/Eigen/Dense>
 #include <StAC_rtxi/dataFuns.h>
 
-#include <dynCtrlEst>
+//#include <dynCtrlEst>
 
 
 class lds_ctrl_adam {

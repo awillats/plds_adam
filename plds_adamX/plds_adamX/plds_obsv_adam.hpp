@@ -16,7 +16,7 @@
 #include <eigen/Eigen/Dense>
 #include <StAC_rtxi/dataFuns.h>
 
-#include <dynCtrlEst>
+//#include <dynCtrlEst>
 
 #include "plds_adam_funs.hpp" // namespace adam 
 #include "plds_ctrl_adam.hpp"

@@ -85,12 +85,12 @@ void slds_ctrl::switchSys_inner(int sys_idx_new)
 	{
 		if ( ((sys_idx_new+1) > allSys.size()) || (sys_idx_new<0) )
 		{
-			std::cout<<"\n\n idx violation: "<<sys_idx_new;
+		//uncomment me soon!//std::cout<<"\n\n idx violation: "<<sys_idx_new;
 			return;
 		}
 		else
 		{
-			std::cout<<"\nctrl,valid idx: "<<sys_idx_new;
+			//uncomment me soon!//std::cout<<"\nctrl,valid idx: "<<sys_idx_new;
 
 			sysPtr = std::next(allSys.begin(), sys_idx_new); //point to new sys
 			//slds_ctrl::importProps(*sysPtr); //switch A,B,C,D

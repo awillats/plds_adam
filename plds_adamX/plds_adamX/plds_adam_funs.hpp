@@ -25,7 +25,7 @@
 #include <eigen/Eigen/Dense>
 #include <StAC_rtxi/dataFuns.h>
 
-#include <dynCtrlEst>
+//#include <dynCtrlEst>
 
 
 namespace adam{
@@ -36,8 +36,6 @@ namespace adam{
 	typedef arma::Mat<data_t> Mat;
 	typedef arma::subview_col<data_t> SubVec;
 	typedef arma::subview<data_t> SubMat;
-
-
 
 	static const int AUG_STATE = 0x1;
 	static const int AUG_INTY = 0x2;
