@@ -162,8 +162,6 @@ void lds_adam::augment4PI()
 
 	D.resize(1,nU);
 
-
-
 	x.resize(nX,1);
 
 

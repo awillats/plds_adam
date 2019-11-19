@@ -41,6 +41,7 @@ class lds_ctrl_adam {
 
 	
 	void loadGains();
+	void augGains(adam::data_t);
 	void toggleSilent();
 	double calcU(adam::data_t, adam::Vec);
 	void printGains();

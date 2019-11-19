@@ -25,6 +25,17 @@ void lds_ctrl_adam::loadGains()
 	isSilent = false;
 }
 
+void lds_ctrl_adam::augGains(data_t KI)
+{
+	nX++;
+	K.fill(0);//this is only for debugging
+	//K<<K<<KI;
+	K.resize(nX);
+	K(nX-1)=1;//hardcoded
+	std::cout<<"K augmented to:"<<K;
+}
+
+
 void lds_ctrl_adam::toggleSilent()
 {
 	isSilent = (isSilent==false); //heh
