@@ -272,7 +272,7 @@ void plds_adam::importProps(plds_adam sysIn)
 
 	nl_d = sysIn.nl_d;//replace with more general sys params
 
-	std::cout<<" plds import_called, B:"<<std::endl<<B;
+	//std::cout<<" plds import_called, B:"<<std::endl<<B;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////SLDS_ADAM
