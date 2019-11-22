@@ -39,7 +39,8 @@ void lds_adam::loadParamsFromTxt()
 {
 	std::string homepath = getenv("HOME");
 	std::ifstream myfile;
-	myfile.open(homepath+"/RTXI/modules/ss_modules/ss_ctrl/params/plant_params.txt");
+	myfile.open(homepath+"/CodeRepository/adam_RTXI/modules/ss_modules/ss_ctrl/params/plant_params.txt");
+	//myfile.open(homepath+"/RTXI/modules/ss_modules/ss_ctrl/params/plant_params.txt");
     
     if (myfile.good())
     {

@@ -14,7 +14,9 @@ void lds_ctrl_adam::loadGains()
 {
 	std::string homepath = getenv("HOME");
 	std::ifstream myfile;
-	myfile.open(homepath+"/RTXI/modules/ss_modules/ss_ctrl/params/gain_params.txt");
+
+	myfile.open(homepath+"/CodeRepository/adam_RTXI/modules/ss_modules/ss_ctrl/params/gain_params.txt");
+	//myfile.open(homepath+"/RTXI/modules/ss_modules/ss_ctrl/params/gain_params.txt");
 
 	nX = (int) pullParamNum(myfile); //gets nx
 	K = pullParamLine(myfile);

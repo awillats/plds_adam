@@ -23,7 +23,9 @@ void lds_obsv::loadObsvParams()
 {
 	std::string homepath = getenv("HOME");
 	std::ifstream myfile;
-	myfile.open(homepath+"/RTXI/modules/ss_modules/ss_obsv/params/obsv_params.txt");
+
+	myfile.open(homepath+"/CodeRepository/adam_RTXI/modules/ss_modules/ss_obsv/params/obsv_params.txt");
+	//myfile.open(homepath+"/RTXI/modules/ss_modules/ss_obsv/params/obsv_params.txt");
     
     if (myfile.good())
     {

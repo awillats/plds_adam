@@ -25,7 +25,8 @@
 #include <eigen/Eigen/Dense>
 #include <StAC_rtxi/dataFuns.h>
 
-#include <dynCtrlEst>
+// #include <dynCtrlEst>
+#include <armadillo>
 
 
 namespace adam{
@@ -63,11 +64,11 @@ class aug_lds{
 
 	aug_lds(int nX)
 	{
-		setAugMap(nX);	
+		setAugMap(nX);
 		std::cout<<"augmented system!";
 	}
 	aug_lds() { aug_lds(2); }
-	
+
 	arma::Col<int> augMap;
 	adam::Vec Br;
 
@@ -79,32 +80,32 @@ class lds_adam{
     //vars
     //empty constructor
     //real constructor 1
-    
+
     public:
-    
+
         int nX;
         int nU;
         int nY;
 
-    
+
         adam::Mat A; //Eigen::Matrix2d A;
         adam::Mat B; //Eigen::Vector2d B; //B shoudl be a matrix!!!
-        adam::RowVec C; //Eigen::RowVector2d C; 
-        adam::RowVec D; 
-    
+        adam::RowVec C; //Eigen::RowVector2d C;
+        adam::RowVec D;
+
         adam::Vec x;
         adam::data_t y;
         adam::data_t u;
-    
+
         adam::data_t dt;
-    
+
 	bool isAug;
 	aug_lds augments;
 
 
 
         lds_adam(): nX(2), nU(1) , nY(1), isAug(false){ initSys();};
-    
+
         //lds_adam(): nX(2), nU(1) , nY(1){ ;};
 
         void printSys();
@@ -114,15 +115,15 @@ class lds_adam{
 
 
         void stepPlant(double);
-	void stepPlant(adam::Vec, double);  
+	void stepPlant(adam::Vec, double);
 	void stepPlant(double, double);//for augmented systems
 	void importProps(lds_adam);
 
         //void randInit();
 	void augment4PI();
 	//friend lds_adam aug_lds::augment4PI(lds_adam);
-        
-    private:   
+
+    private:
 };
 
 
@@ -138,8 +139,8 @@ class lds_adam{
 
 class glds_adam : public lds_adam{
     private:
-	//std::random_device rd; 
-    	//std::mt19937 gen; 
+	//std::random_device rd;
+    	//std::mt19937 gen;
 
     public:
 	//A,B,C,D
@@ -148,7 +149,7 @@ class glds_adam : public lds_adam{
 	adam::Mat Q;
 	adam::Mat R;
 
-         glds_adam(): lds_adam(), qmag(1e-2), rmag(1e-1)//rmag=1e-1 
+         glds_adam(): lds_adam(), qmag(1e-2), rmag(1e-1)//rmag=1e-1
 	{
 	    initSys();
 	};
@@ -163,7 +164,7 @@ class glds_adam : public lds_adam{
 ////////////////////////////////////////////////////////////////////////////// PLDS CLASSDEF
 class plds_adam: public lds_adam{
     private:
-	
+
     public:
 adam::data_t dt;//should be private later
 	//A,B,C,D
@@ -203,7 +204,7 @@ class slds : public glds_adam{
 	//have a family of push/pop options??
 
     public:
-	
+
 	std::vector<glds_adam> allSys;
 	std::vector<glds_adam>::iterator sysPtr;
 	int sys_idx;
@@ -216,7 +217,7 @@ class slds : public glds_adam{
 
 	void initSys();
 	void switchSys(int);
-}; 
+};
 
 /*
 class slds_tensor : public lds_adam{
@@ -234,7 +235,7 @@ class splds : public plds_adam{
 	//have a family of push/pop options??
 
     public:
-	
+
 	std::vector<plds_adam> allSys;
 	std::vector<plds_adam>::iterator sysPtr;
 	int sys_idx;
@@ -247,16 +248,8 @@ class splds : public plds_adam{
 
 	void initSys();
 	void switchSys(int);
-}; 
+};
 
 
 
 #endif /* lds_adam_funs_hpp */
-
-
-
-
-
-
-
-

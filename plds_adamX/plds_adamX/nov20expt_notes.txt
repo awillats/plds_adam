@@ -1,0 +1,14 @@
+ToDo:
+-need to check makelfiles and load statements for relative paths
+-add "divide ref by dt" button to ctrl module
+
+
+obsv.x>ctrl.x
+dec.q>obsv.q
+dec.q>ctrl.q
+spike_listener.n>obsv.spike_meas
+glds_ctrl.u>obsv.ustim
+mat_expt_loader.y>gain.xin
+gain.xin > ctrl.r
+
+notably this gain is scaled by 1/1000 because MB's ref is in FR space
